@@ -1,0 +1,10 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g3" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6e675f"/>
+      <stop offset="100%" style="stop-color:#5e3f22"/>
+    </linearGradient>
+  </defs>
+  <rect fill="url(#g3)" width="1920" height="1080"/>
+  <text fill="#c9c4bd" font-family="Georgia,serif" font-size="48" text-anchor="middle" x="960" y="540">AIBA STONE — Hero 3</text>
+</svg>
