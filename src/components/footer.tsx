@@ -21,7 +21,7 @@ export function Footer() {
               </div>
               <span
                 className="text-2xl font-bold text-white"
-                style={{ fontFamily: "var(--font-heading)" }}
+                style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {SITE.name}
               </span>

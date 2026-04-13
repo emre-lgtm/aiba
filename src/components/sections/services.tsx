@@ -57,7 +57,7 @@ export function ServicesSection() {
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
-            style={{ fontFamily: "var(--font-heading)" }}
+            style={{ fontFamily: "var(--font-playfair)" }}
           >
             Our <span className="text-gradient">Services</span>
           </h2>
@@ -89,7 +89,7 @@ export function ServicesSection() {
 
                 <h3
                   className="text-xl font-bold text-stone-900 mb-3"
-                  style={{ fontFamily: "var(--font-heading)" }}
+                  style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {service.title}
                 </h3>

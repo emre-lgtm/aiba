@@ -39,7 +39,7 @@ export function Navbar() {
                 "text-xl font-bold tracking-tight transition-colors",
                 isScrolled ? "text-stone-900" : "text-white"
               )}
-              style={{ fontFamily: "var(--font-heading)" }}
+              style={{ fontFamily: "var(--font-playfair)" }}
             >
               {SITE.name}
             </span>

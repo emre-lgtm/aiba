@@ -10,22 +10,22 @@ const geistSans = Geist({
 });
 
 const playfair = Playfair_Display({
-  variable: "--font-heading",
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "AIBA STONE | Premium Doğal Taş & Mermer",
+  title: "AIBA STONE | Premium Natural Stone & Marble",
   description:
-    "Premium doğal taş ve mermer çözümleri. Lüks mekanlara estetik dokunuşlar. Mutfak tezgahı, banyo, zemin kaplama ve dış cephe uygulamaları.",
+    "Premium natural stone and marble solutions. Adding elegance to luxury spaces. Kitchen countertops, bathroom, flooring and exterior applications.",
   keywords: [
-    "mermer",
-    "doğal taş",
-    "mutfak tezgahı",
-    "banyo kaplama",
-    "zemin döşeme",
-    "dış cephe",
-    "traverten",
+    "marble",
+    "natural stone",
+    "kitchen countertop",
+    "bathroom cladding",
+    "flooring",
+    "exterior",
+    "travertine",
     "onyx",
     "AIBA STONE",
   ],
@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="tr"
+      lang="en"
       className={`${geistSans.variable} ${playfair.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-stone-50 text-stone-900">

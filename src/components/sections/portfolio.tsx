@@ -65,7 +65,7 @@ export function PortfolioSection() {
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
-            style={{ fontFamily: "var(--font-heading)" }}
+            style={{ fontFamily: "var(--font-playfair)" }}
           >
             Featured <span className="text-gradient">Projects</span>
           </h2>
@@ -137,7 +137,7 @@ export function PortfolioSection() {
                     </span>
                     <h3
                       className="text-white text-lg font-bold mt-1"
-                      style={{ fontFamily: "var(--font-heading)" }}
+                      style={{ fontFamily: "var(--font-playfair)" }}
                     >
                       {item.title}
                     </h3>
@@ -220,7 +220,7 @@ export function PortfolioSection() {
                 </span>
                 <h3
                   className="text-white text-2xl md:text-3xl font-bold mt-2"
-                  style={{ fontFamily: "var(--font-heading)" }}
+                  style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {filteredItems[lightboxIndex].title}
                 </h3>

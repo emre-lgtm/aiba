@@ -116,7 +116,7 @@ export function HeroSection() {
                 custom={0.2}
                 variants={textVariants}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6"
-                style={{ fontFamily: "var(--font-heading)" }}
+                style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {slide.title}
                 <br />

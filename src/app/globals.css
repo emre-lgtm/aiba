@@ -5,17 +5,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-
-  --color-stone-50: #faf9f7;
-  --color-stone-100: #f0eeeb;
-  --color-stone-200: #e0ddd8;
-  --color-stone-300: #c9c4bd;
-  --color-stone-400: #a8a197;
-  --color-stone-500: #8a8279;
-  --color-stone-600: #6e675f;
-  --color-stone-700: #5c5650;
-  --color-stone-800: #3d3a36;
-  --color-stone-900: #1a1918;
+  --font-heading: var(--font-playfair);
 
   --color-bronze-50: #fdf8f0;
   --color-bronze-100: #f9eddb;
@@ -31,8 +21,6 @@
   --color-cream: #faf8f4;
   --color-charcoal: #2c2c2c;
   --color-warm-gray: #6b6560;
-
-  --font-heading: "Playfair Display", Georgia, serif;
 }
 
 :root {
@@ -47,13 +35,13 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-sans, system-ui, sans-serif);
   overflow-x: hidden;
 }
 
 ::selection {
   background: var(--color-bronze-200);
-  color: var(--color-stone-900);
+  color: #1a1918;
 }
 
 .section-padding {
