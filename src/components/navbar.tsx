@@ -64,7 +64,7 @@ export function Navbar() {
             className="flex items-center gap-2 bg-bronze-600 hover:bg-bronze-700 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors"
           >
             <Phone className="w-4 h-4" />
-            Bizi Arayın
+            Call Us
           </a>
         </div>
 
@@ -74,7 +74,7 @@ export function Navbar() {
             "lg:hidden p-2 transition-colors",
             isScrolled ? "text-stone-900" : "text-white"
           )}
-          aria-label="Menü"
+          aria-label="Menu"
         >
           {isMobileOpen ? (
             <X className="w-6 h-6" />
@@ -109,7 +109,7 @@ export function Navbar() {
                 className="flex items-center justify-center gap-2 bg-bronze-600 text-white px-5 py-3 rounded-full font-medium mt-2"
               >
                 <Phone className="w-4 h-4" />
-                Bizi Arayın
+                Call Us
               </a>
             </div>
           </motion.div>

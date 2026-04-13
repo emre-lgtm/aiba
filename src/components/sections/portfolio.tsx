@@ -12,12 +12,12 @@ import { cn } from "@/lib/utils";
 
 export function PortfolioSection() {
   const [activeCategory, setActiveCategory] = useState<PortfolioCategory>(
-    "Tümü"
+    "All"
   );
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const filteredItems =
-    activeCategory === "Tümü"
+    activeCategory === "All"
       ? PORTFOLIO_ITEMS
       : PORTFOLIO_ITEMS.filter((item) => item.category === activeCategory);
 
@@ -61,17 +61,17 @@ export function PortfolioSection() {
           className="text-center max-w-2xl mx-auto mb-12"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
-            Portfolyo
+            Portfolio
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            Öne Çıkan <span className="text-gradient">Projeler</span>
+            Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed">
-            Her proje, doğal taşın eşsiz güzelliğini mekanlarla buluşturan bir
-            sanat eseridir.
+            Every project is a work of art that brings the unique beauty of
+            natural stone to life in your spaces.
           </p>
         </motion.div>
 
@@ -171,7 +171,7 @@ export function PortfolioSection() {
             <button
               onClick={closeLightbox}
               className="absolute top-6 right-6 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-              aria-label="Kapat"
+              aria-label="Close"
             >
               <X className="w-6 h-6" />
             </button>
@@ -182,7 +182,7 @@ export function PortfolioSection() {
                 navigateLightbox(-1);
               }}
               className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-              aria-label="Önceki"
+              aria-label="Previous"
             >
               <ChevronLeft className="w-8 h-8" />
             </button>
@@ -193,7 +193,7 @@ export function PortfolioSection() {
                 navigateLightbox(1);
               }}
               className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-              aria-label="Sonraki"
+              aria-label="Next"
             >
               <ChevronRight className="w-8 h-8" />
             </button>

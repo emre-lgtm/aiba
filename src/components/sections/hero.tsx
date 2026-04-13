@@ -140,13 +140,13 @@ export function HeroSection() {
                   href="#portfolio"
                   className="inline-flex items-center gap-2 bg-bronze-600 hover:bg-bronze-700 text-white px-8 py-4 rounded-full font-medium transition-all hover:shadow-lg hover:shadow-bronze-600/25"
                 >
-                  Projelerimizi İnceleyin
+                  View Our Projects
                 </a>
                 <a
                   href="#contact"
                   className="inline-flex items-center gap-2 border-2 border-white/30 hover:border-white/60 text-white px-8 py-4 rounded-full font-medium transition-all hover:bg-white/10"
                 >
-                  Teklif Alın
+                  Get a Quote
                 </a>
               </motion.div>
             </motion.div>
@@ -165,7 +165,7 @@ export function HeroSection() {
                 ? "w-10 h-2.5 bg-bronze-400"
                 : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
             )}
-            aria-label={`Slayt ${i + 1}`}
+            aria-label={`Slide ${i + 1}`}
           />
         ))}
       </div>
@@ -173,14 +173,14 @@ export function HeroSection() {
       <button
         onClick={() => paginate(-1)}
         className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all backdrop-blur-sm"
-        aria-label="Önceki slayt"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
         onClick={() => paginate(1)}
         className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all backdrop-blur-sm"
-        aria-label="Sonraki slayt"
+        aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6" />
       </button>

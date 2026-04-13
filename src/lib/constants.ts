@@ -1,41 +1,41 @@
 export const SITE = {
   name: "AIBA STONE",
   description:
-    "Premium doğal taş ve mermer çözümleri. Lüks mekanlara estetik dokunuşlar.",
+    "Premium natural stone and marble solutions. Adding elegance to luxury spaces.",
   url: "https://www.aibastone.com",
 };
 
 export const NAV_LINKS = [
-  { label: "Ana Sayfa", href: "#hero" },
-  { label: "Hizmetlerimiz", href: "#services" },
-  { label: "Portfolyo", href: "#portfolio" },
-  { label: "Hakkımızda", href: "#about" },
-  { label: "İletişim", href: "#contact" },
+  { label: "Home", href: "#hero" },
+  { label: "Services", href: "#services" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export const HERO_SLIDES = [
   {
     id: 1,
-    title: "Doğal Taşın",
-    accent: "Zarafeti",
+    title: "The Elegance",
+    accent: "of Natural Stone",
     description:
-      "Dünyanın en seçkin ocaklarından getirilen premium mermer ve doğal taş koleksiyonumuzla mekanlarınıza estetik katıyoruz.",
+      "We bring elegance to your spaces with our premium marble and natural stone collection sourced from the finest quarries in the world.",
     image: "/images/hero/hero-1.jpg",
   },
   {
     id: 2,
-    title: "Mükemmellik",
-    accent: "İnşaatında",
+    title: "Built with",
+    accent: "Excellence",
     description:
-      "Yılların deneyimi ve uzman kadromuzla, her projede en yüksek kalite standartlarını sağlıyoruz.",
+      "With years of experience and our expert team, we deliver the highest quality standards in every project.",
     image: "/images/hero/hero-2.jpg",
   },
   {
     id: 3,
-    title: "Taş",
-    accent: "Sanatı",
+    title: "The Art",
+    accent: "of Stone",
     description:
-      "Her bir taş, doğanın sanat eseri. Eşsiz damar yapıları ve renkleriyle mekanlarınıza karakter katıyor.",
+      "Every stone is nature's masterpiece. Unique veining and colors that bring character to your spaces.",
     image: "/images/hero/hero-3.jpg",
   },
 ];
@@ -43,48 +43,48 @@ export const HERO_SLIDES = [
 export const SERVICES = [
   {
     icon: "Gem" as const,
-    title: "Mermer Tedarik",
+    title: "Marble Supply",
     description:
-      "İtalya, Türkiye ve Hindistan'ın en prestijli ocaklarından özenle seçilmiş premium mermer çeşitleri.",
+      "Carefully selected premium marble varieties from the most prestigious quarries in Italy, Turkey, and India.",
   },
   {
     icon: "Ruler" as const,
-    title: "Ölçü ve Kesim",
+    title: "Measurement & Cutting",
     description:
-      "CNC teknolojisi ve uzman ustalarımızla milimetrik hassasiyette özel kesim çözümleri.",
+      "Precision cutting solutions with CNC technology and our master craftsmen.",
   },
   {
     icon: "Home" as const,
-    title: "İç Mimarlık",
+    title: "Interior Architecture",
     description:
-      "Mutfak tezgahından banyo kaplamasına, zemin döşemesinden duvar kaplamasına kadar kapsamlı uygulama.",
+      "Comprehensive applications from kitchen countertops to bathroom cladding, flooring to wall coverings.",
   },
   {
     icon: "Truck" as const,
-    title: "Lojistik & Montaj",
+    title: "Logistics & Installation",
     description:
-      "Güvenli nakliye, profesyonel montaj ve son detay cilası dahil turn-key hizmet anlayışı.",
+      "Turn-key service including secure transportation, professional installation, and final finishing.",
   },
   {
     icon: "Palette" as const,
-    title: "Renk & Desen Danışmanlığı",
+    title: "Color & Pattern Consultancy",
     description:
-      "Mekanınızın konseptine uygun taş seçimi için profesyonel danışmanlık hizmeti.",
+      "Professional consultancy for stone selection that matches your space's concept.",
   },
   {
     icon: "ShieldCheck" as const,
-    title: "Bakım & Restorasyon",
+    title: "Maintenance & Restoration",
     description:
-      "Doğal taş yüzeylerin uzun ömürlü olması için periyodik bakım ve restorasyon hizmetleri.",
+      "Periodic maintenance and restoration services for long-lasting natural stone surfaces.",
   },
 ];
 
 export const PORTFOLIO_CATEGORIES = [
-  "Tümü",
-  "Mutfak",
-  "Banyo",
-  "Zemin",
-  "Dış Cephe",
+  "All",
+  "Kitchen",
+  "Bathroom",
+  "Flooring",
+  "Exterior",
 ] as const;
 
 export type PortfolioCategory = (typeof PORTFOLIO_CATEGORIES)[number];
@@ -92,66 +92,66 @@ export type PortfolioCategory = (typeof PORTFOLIO_CATEGORIES)[number];
 export const PORTFOLIO_ITEMS = [
   {
     id: 1,
-    title: "Calacatta Oro Mutfak",
-    category: "Mutfak" as PortfolioCategory,
-    description: "Calacatta Oro mermer ile tasarlanmış lüks mutfak tezgahı",
+    title: "Calacatta Oro Kitchen",
+    category: "Kitchen" as PortfolioCategory,
+    description: "Luxury kitchen countertop crafted with Calacatta Oro marble",
     image: "/images/portfolio/calacatta-kitchen.jpg",
     stone: "Calacatta Oro",
   },
   {
     id: 2,
-    title: "Noce Traverten Spa",
-    category: "Banyo" as PortfolioCategory,
-    description: "Noce Traverten ile kaplanmış spa havuzu ve banyo",
+    title: "Noce Travertine Spa",
+    category: "Bathroom" as PortfolioCategory,
+    description: "Spa pool and bathroom clad in Noce Travertine",
     image: "/images/portfolio/travertine-spa.jpg",
-    stone: "Noce Traverten",
+    stone: "Noce Travertine",
   },
   {
     id: 3,
-    title: "Nero Marquina Lobi",
-    category: "Zemin" as PortfolioCategory,
-    description: "Nero Marquina mermer zemin uygulaması - otel lobisi",
+    title: "Nero Marquina Lobby",
+    category: "Flooring" as PortfolioCategory,
+    description: "Nero Marquina marble flooring — hotel lobby application",
     image: "/images/portfolio/nero-marquina-lobby.jpg",
     stone: "Nero Marquina",
   },
   {
     id: 4,
     title: "Honey Onyx Bar",
-    category: "Mutfak" as PortfolioCategory,
-    description: "Işıklı Honey Onyx bar tezgahı - özel tasarım",
+    category: "Kitchen" as PortfolioCategory,
+    description: "Backlit Honey Onyx bar countertop — custom design",
     image: "/images/portfolio/honey-onyx-bar.jpg",
     stone: "Honey Onyx",
   },
   {
     id: 5,
-    title: "Beyaz Lafteri Villa",
-    category: "Dış Cephe" as PortfolioCategory,
-    description: "Beyaz Lafteri doğal taş villa cephe kaplaması",
+    title: "White Limestone Villa",
+    category: "Exterior" as PortfolioCategory,
+    description: "White Limestone natural stone villa facade cladding",
     image: "/images/portfolio/limra-villa.jpg",
-    stone: "Beyaz Lafteri",
+    stone: "White Limestone",
   },
   {
     id: 6,
-    title: "Statuario Banyo",
-    category: "Banyo" as PortfolioCategory,
-    description: "Statuario Venato mermer ile minimalist banyo tasarımı",
+    title: "Statuario Bathroom",
+    category: "Bathroom" as PortfolioCategory,
+    description: "Minimalist bathroom design with Statuario Venato marble",
     image: "/images/portfolio/statuario-bath.jpg",
     stone: "Statuario Venato",
   },
   {
     id: 7,
-    title: "Kaplan Mermer Ofis",
-    category: "Zemin" as PortfolioCategory,
-    description: "Kaplan Grey mermer zemin - kurumsal ofis girişi",
+    title: "Emperador Office",
+    category: "Flooring" as PortfolioCategory,
+    description: "Emperador Dark marble flooring — corporate office entrance",
     image: "/images/portfolio/emperador-office.jpg",
-    stone: "Kaplan Grey",
+    stone: "Emperador Dark",
   },
   {
     id: 8,
-    title: "Elazığ Vişne Villalar",
-    category: "Dış Cephe" as PortfolioCategory,
-    description: "Elazığ Vişne mermer ile prestijli villa dış cephe",
+    title: "Cherry Marble Villas",
+    category: "Exterior" as PortfolioCategory,
+    description: "Prestigious villa exterior with Elazig Cherry marble",
     image: "/images/portfolio/cherry-villas.jpg",
-    stone: "Elazığ Vişne",
+    stone: "Elazig Cherry",
   },
 ];

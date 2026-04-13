@@ -53,17 +53,18 @@ export function ServicesSection() {
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
-            Hizmetlerimiz
+            What We Do
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            Yaptığımız <span className="text-gradient">İşler</span>
+            Our <span className="text-gradient">Services</span>
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed">
-            Doğal taş dünyasındaki uzmanlığımızla, projenizin her aşamasında
-            yanınızdayız. Tedarikten montaja kadar kapsamlı çözümler sunuyoruz.
+            With our expertise in the natural stone world, we are with you at
+            every stage of your project. Comprehensive solutions from supply to
+            installation.
           </p>
         </motion.div>
 

@@ -1,6 +1,14 @@
 import { MapPin, Phone, Mail } from "lucide-react";
 import { SITE } from "@/lib/constants";
 
+const QUICK_LINKS = [
+  { label: "Home", href: "#hero" },
+  { label: "Services", href: "#services" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
 export function Footer() {
   return (
     <footer className="bg-stone-900 text-stone-300">
@@ -19,27 +27,21 @@ export function Footer() {
               </span>
             </div>
             <p className="text-stone-400 leading-relaxed max-w-md">
-              Premium doğal taş ve mermer çözümleri ile mekanlarınıza değer
-              katıyoruz. Kalite, estetik ve güvenilirlik.
+              Premium natural stone and marble solutions adding value to your
+              spaces. Quality, aesthetics, and reliability.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Hızlı Erişim</h4>
+            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
-              {[
-                "Ana Sayfa",
-                "Hizmetlerimiz",
-                "Portfolyo",
-                "Hakkımızda",
-                "İletişim",
-              ].map((item) => (
-                <li key={item}>
+              {QUICK_LINKS.map((item) => (
+                <li key={item.href}>
                   <a
-                    href={`#${item.toLowerCase().replace(" ", "-")}`}
+                    href={item.href}
                     className="text-stone-400 hover:text-bronze-400 transition-colors"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -47,11 +49,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">İletişim</h4>
+            <h4 className="text-white font-semibold mb-4">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-bronze-500 mt-0.5 shrink-0" />
-                <span className="text-stone-400">Antalya, Türkiye</span>
+                <span className="text-stone-400">Antalya, Turkey</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-bronze-500 shrink-0" />
@@ -77,11 +79,10 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-stone-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-stone-500 text-sm">
-            &copy; {new Date().getFullYear()} {SITE.name}. Tüm hakları
-            saklıdır.
+            &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
           <p className="text-stone-600 text-xs">
-            Premium Doğal Taş & Mermer Çözümleri
+            Premium Natural Stone & Marble Solutions
           </p>
         </div>
       </div>
