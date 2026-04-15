@@ -23,7 +23,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Her zaman TypeScript kullan
 - Stil için Tailwind CSS sınıfları kullan, özel CSS yazma
 - `@/*` path alias'ı `./src/*` dizinine işaret eder
-- Next.js `output: "standalone"` ile derleniyor
+- Vercel'a deploy ediliyor, `output: "standalone"` kullanılmıyor
 - `src/` dizini altında çalış
 - Yorum ekleme
 - Değişiklik sonrası `npm run lint` ve `npm run build` çalıştır
