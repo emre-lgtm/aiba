@@ -135,9 +135,9 @@ INSERT INTO portfolio_categories (name, slug, sort_order) VALUES
 ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO hero_slides (title, accent, description, image_url, sort_order) VALUES
-  ('The Elegance', 'of Natural Stone', 'We bring elegance to your spaces with our premium marble and natural stone collection sourced from the finest quarries in the world.', '/images/hero/hero-1.jpg', 1),
-  ('Built with', 'Excellence', 'With years of experience and our expert team, we deliver the highest quality standards in every project.', '/images/hero/hero-2.jpg', 2),
-  ('The Art', 'of Stone', 'Every stone is nature''s masterpiece. Unique veining and colors that bring character to your spaces.', '/images/hero/hero-3.jpg', 3)
+  ('The Elegance', 'of Natural Stone', 'We bring elegance to your spaces with our premium marble and natural stone collection sourced from the finest quarries in the world.', 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80', 1),
+  ('Built with', 'Excellence', 'With years of experience and our expert team, we deliver the highest quality standards in every project.', 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80', 2),
+  ('The Art', 'of Stone', 'Every stone is nature''s masterpiece. Unique veining and colors that bring character to your spaces.', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80', 3)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO services (icon, title, description, sort_order) VALUES
