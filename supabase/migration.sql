@@ -67,6 +67,11 @@ ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 
 -- Public read
+DROP POLICY IF EXISTS "Public read categories" ON portfolio_categories;
+DROP POLICY IF EXISTS "Public read portfolio" ON portfolio_items;
+DROP POLICY IF EXISTS "Public read hero" ON hero_slides;
+DROP POLICY IF EXISTS "Public read services" ON services;
+DROP POLICY IF EXISTS "Public read settings" ON site_settings;
 CREATE POLICY "Public read categories" ON portfolio_categories FOR SELECT TO anon USING (true);
 CREATE POLICY "Public read portfolio" ON portfolio_items FOR SELECT TO anon USING (true);
 CREATE POLICY "Public read hero" ON hero_slides FOR SELECT TO anon USING (true);
@@ -74,6 +79,11 @@ CREATE POLICY "Public read services" ON services FOR SELECT TO anon USING (true)
 CREATE POLICY "Public read settings" ON site_settings FOR SELECT TO anon USING (true);
 
 -- Auth full access
+DROP POLICY IF EXISTS "Auth full categories" ON portfolio_categories;
+DROP POLICY IF EXISTS "Auth full portfolio" ON portfolio_items;
+DROP POLICY IF EXISTS "Auth full hero" ON hero_slides;
+DROP POLICY IF EXISTS "Auth full services" ON services;
+DROP POLICY IF EXISTS "Auth full settings" ON site_settings;
 CREATE POLICY "Auth full categories" ON portfolio_categories FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Auth full portfolio" ON portfolio_items FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Auth full hero" ON hero_slides FOR ALL TO authenticated USING (true) WITH CHECK (true);
@@ -90,9 +100,12 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO storage.buckets (id, name, public) VALUES ('hero-images', 'hero-images', true)
 ON CONFLICT (id) DO NOTHING;
 
+DROP POLICY IF EXISTS "Public read portfolio images" ON storage.objects;
+DROP POLICY IF EXISTS "Auth portfolio images" ON storage.objects;
+DROP POLICY IF EXISTS "Public read hero images" ON storage.objects;
+DROP POLICY IF EXISTS "Auth hero images" ON storage.objects;
 CREATE POLICY "Public read portfolio images" ON storage.objects FOR SELECT TO anon USING (bucket_id = 'portfolio-images');
 CREATE POLICY "Auth portfolio images" ON storage.objects FOR ALL TO authenticated USING (bucket_id = 'portfolio-images') WITH CHECK (bucket_id = 'portfolio-images');
-
 CREATE POLICY "Public read hero images" ON storage.objects FOR SELECT TO anon USING (bucket_id = 'hero-images');
 CREATE POLICY "Auth hero images" ON storage.objects FOR ALL TO authenticated USING (bucket_id = 'hero-images') WITH CHECK (bucket_id = 'hero-images');
 
