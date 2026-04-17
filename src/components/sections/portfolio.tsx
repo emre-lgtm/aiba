@@ -4,22 +4,92 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import {
-  PORTFOLIO_ITEMS,
-  PORTFOLIO_CATEGORIES,
+  PORTFOLIO_ITEMS as FALLBACK_ITEMS,
+  PORTFOLIO_CATEGORIES as FALLBACK_CATEGORIES,
   type PortfolioCategory,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
+type PortfolioItem = {
+  id: string;
+  title: string;
+  stone_type: string;
+  image_url: string;
+  description: string | null;
+  category: { id: string; name: string; slug: string } | null;
+};
+
+type Category = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+function toUiItem(item: PortfolioItem) {
+  return {
+    id: item.id,
+    title: item.title,
+    category: (item.category?.name || "All") as PortfolioCategory,
+    description: item.description || "",
+    image: item.image_url,
+    stone: item.stone_type,
+  };
+}
+
 export function PortfolioSection() {
-  const [activeCategory, setActiveCategory] = useState<PortfolioCategory>(
-    "All"
-  );
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [items, setItems] = useState<ReturnType<typeof toUiItem>[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [portfolioRes, categoriesRes] = await Promise.all([
+          fetch("/api/portfolio"),
+          fetch("/api/categories"),
+        ]);
+        const portfolioData = await portfolioRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        if (Array.isArray(portfolioData) && portfolioData.length > 0) {
+          setItems(portfolioData.map(toUiItem));
+          const catNames = ["All", ...categoriesData.map((c: Category) => c.name)];
+          setCategories(catNames);
+        } else {
+          setItems(
+            FALLBACK_ITEMS.map((item) => ({
+              id: String(item.id),
+              title: item.title,
+              category: item.category,
+              description: item.description,
+              image: item.image,
+              stone: item.stone,
+            }))
+          );
+          setCategories([...FALLBACK_CATEGORIES]);
+        }
+      } catch {
+        setItems(
+          FALLBACK_ITEMS.map((item) => ({
+            id: String(item.id),
+            title: item.title,
+            category: item.category,
+            description: item.description,
+            image: item.image,
+            stone: item.stone,
+          }))
+        );
+        setCategories([...FALLBACK_CATEGORIES]);
+      }
+    };
+    fetchData();
+  }, []);
 
   const filteredItems =
     activeCategory === "All"
-      ? PORTFOLIO_ITEMS
-      : PORTFOLIO_ITEMS.filter((item) => item.category === activeCategory);
+      ? items
+      : items.filter((item) => item.category === activeCategory);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -82,7 +152,7 @@ export function PortfolioSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex flex-wrap justify-center gap-3 mb-12"
         >
-          {PORTFOLIO_CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
