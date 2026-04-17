@@ -19,10 +19,8 @@ import {
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeft, Loader2, Upload, X, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, Upload, X, Sparkles, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
@@ -95,8 +93,7 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
     if (!file) return;
 
     setUploading(true);
-    const ext = file.name.split(".").pop();
-    const path = `${crypto.randomUUID()}.${ext}`;
+    const path = `${crypto.randomUUID()}.${file.name.split(".").pop()}`;
 
     const { error } = await supabase.storage
       .from("portfolio-images")
@@ -225,169 +222,180 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-3xl">
       <div className="flex items-center gap-4">
         <Link href="/admin/portfolio">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="rounded-xl">
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">
-            {isEditing ? "Edit Portfolio Item" : "New Portfolio Item"}
+          <h1 className="text-2xl font-bold text-stone-900">
+            {isEditing ? "Edit Item" : "New Item"}
           </h1>
+          <p className="text-stone-500 text-sm mt-0.5">
+            {isEditing ? "Update portfolio entry" : "Add to your portfolio"}
+          </p>
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Calacatta Oro Kitchen"
-                required
-              />
-            </div>
+      <div className="grid gap-6 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="title" className="text-xs font-medium uppercase tracking-wider text-stone-500">Title *</Label>
+                  <Input
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Calacatta Oro Kitchen"
+                    required
+                    className="h-11"
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="stone_type">Stone Type *</Label>
-              <Input
-                id="stone_type"
-                value={stoneType}
-                onChange={(e) => setStoneType(e.target.value)}
-                placeholder="Calacatta Oro"
-                required
-              />
-            </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="stone_type" className="text-xs font-medium uppercase tracking-wider text-stone-500">Stone Type *</Label>
+                    <Input
+                      id="stone_type"
+                      value={stoneType}
+                      onChange={(e) => setStoneType(e.target.value)}
+                      placeholder="Calacatta Oro"
+                      required
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-medium uppercase tracking-wider text-stone-500">Category</Label>
+                    <Select value={categoryId} onValueChange={setCategoryId}>
+                      <SelectTrigger className="h-11">
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-            <div className="space-y-2">
-              <Label>Category</Label>
-              <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description" className="text-xs font-medium uppercase tracking-wider text-stone-500">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Luxury kitchen countertop crafted with Calacatta Oro marble"
+                    rows={3}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Luxury kitchen countertop crafted with Calacatta Oro marble"
-                rows={3}
-              />
-            </div>
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-3">
+                    <Switch checked={featured} onCheckedChange={setFeatured} id="featured" />
+                    <Label htmlFor="featured" className="text-sm font-medium">Featured</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="sort_order" className="text-xs font-medium text-stone-500">Order</Label>
+                    <Input
+                      id="sort_order"
+                      type="number"
+                      value={sortOrder}
+                      onChange={(e) => setSortOrder(Number(e.target.value))}
+                      className="h-9 w-20"
+                    />
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="sort_order">Sort Order</Label>
-                <Input
-                  id="sort_order"
-                  type="number"
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(Number(e.target.value))}
-                />
-              </div>
-              <div className="flex items-center gap-3 pt-6">
-                <Switch
-                  checked={featured}
-                  onCheckedChange={setFeatured}
-                  id="featured"
-                />
-                <Label htmlFor="featured">Featured</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label>Image *</Label>
                 <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowAiPanel(!showAiPanel)}
+                  type="submit"
+                  className="w-full h-11 bg-stone-900 hover:bg-stone-800 text-white"
+                  disabled={saving || !title || !stoneType || !imageUrl}
                 >
-                  <Sparkles className="h-4 w-4 mr-1" />
-                  AI Generate
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isEditing ? "Update Item" : "Create Item"}
                 </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2 space-y-4">
+          <Card className="border-0 shadow-sm overflow-hidden">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <Label className="text-xs font-medium uppercase tracking-wider text-stone-500">Image *</Label>
+                <button
+                  type="button"
+                  onClick={() => setShowAiPanel(!showAiPanel)}
+                  className="flex items-center gap-1.5 text-xs font-medium text-bronze-600 hover:text-bronze-700 transition-colors"
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  AI Generate
+                </button>
               </div>
 
               {showAiPanel && (
-                <Card className="p-4 space-y-3 bg-stone-50">
-                  <div className="space-y-2">
-                    <Label className="text-xs">Custom prompt (optional)</Label>
-                    <Textarea
-                      value={customPrompt}
-                      onChange={(e) => setCustomPrompt(e.target.value)}
-                      placeholder={
-                        stoneType
-                          ? buildPrompt(stoneType, selectedCategory?.name || "Kitchen")
-                          : "Enter stone type above first..."
-                      }
-                      rows={3}
-                      className="text-sm"
-                    />
-                  </div>
+                <div className="mb-4 p-3 rounded-xl bg-stone-50 border border-stone-200 space-y-3">
+                  <Textarea
+                    value={customPrompt}
+                    onChange={(e) => setCustomPrompt(e.target.value)}
+                    placeholder={
+                      stoneType
+                        ? buildPrompt(stoneType, selectedCategory?.name || "Kitchen")
+                        : "Enter stone type first..."
+                    }
+                    rows={3}
+                    className="text-xs"
+                  />
                   <Button
                     type="button"
                     onClick={handleGenerateImage}
                     disabled={generating || !stoneType}
-                    className="w-full"
-                    variant="secondary"
+                    className="w-full h-9 bg-gradient-to-r from-bronze-600 to-bronze-500 hover:from-bronze-500 hover:to-bronze-400 text-white text-xs"
                   >
                     {generating ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating (~15s)...
+                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                        Generating...
                       </>
                     ) : (
                       <>
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        Generate with GLM-Image
+                        <Wand2 className="mr-1.5 h-3.5 w-3.5" />
+                        Generate with AI
                       </>
                     )}
                   </Button>
-                </Card>
+                </div>
               )}
 
               {imageUrl ? (
-                <div className="relative rounded-lg overflow-hidden border border-stone-200 aspect-[4/3]">
-                  <Image
-                    src={imageUrl}
-                    alt="Preview"
-                    fill
-                    className="object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setImageUrl("")}
-                    className="absolute top-2 right-2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+                <div className="relative rounded-xl overflow-hidden aspect-[4/3] group">
+                  <Image src={imageUrl} alt="Preview" fill className="object-cover" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
+                  <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      type="button"
+                      onClick={() => setImageUrl("")}
+                      className="p-1.5 rounded-lg bg-white/90 hover:bg-white shadow-sm"
+                    >
+                      <X className="h-3.5 w-3.5 text-stone-700" />
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-full aspect-[4/3] border-2 border-dashed border-stone-300 rounded-lg cursor-pointer hover:border-stone-400 transition-colors">
-                  <Upload className="h-8 w-8 text-stone-400 mb-2" />
-                  <span className="text-sm text-stone-500">
-                    {uploading ? "Uploading..." : "Click to upload image"}
+                <label className="flex flex-col items-center justify-center w-full aspect-[4/3] border-2 border-dashed border-stone-300 rounded-xl cursor-pointer hover:border-bronze-400 hover:bg-bronze-50/30 transition-all">
+                  <Upload className="h-7 w-7 text-stone-400 mb-2" />
+                  <span className="text-sm font-medium text-stone-500">
+                    {uploading ? "Uploading..." : "Upload image"}
                   </span>
+                  <span className="text-[11px] text-stone-400 mt-1">or use AI Generate above</span>
                   <input
                     type="file"
                     accept="image/*"
@@ -397,19 +405,10 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
                   />
                 </label>
               )}
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={saving || !title || !stoneType || !imageUrl}
-            >
-              {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEditing ? "Update Item" : "Create Item"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
