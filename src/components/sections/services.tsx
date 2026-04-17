@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Gem,
@@ -8,17 +9,18 @@ import {
   Truck,
   Palette,
   ShieldCheck,
+  Wrench,
+  Hammer,
+  Paintbrush,
+  Droplets,
+  Layers,
+  Eye,
 } from "lucide-react";
-import { SERVICES } from "@/lib/constants";
+import { SERVICES as FALLBACK_SERVICES } from "@/lib/constants";
 
-const ICON_MAP = {
-  Gem,
-  Ruler,
-  Home,
-  Truck,
-  Palette,
-  ShieldCheck,
-} as const;
+import type { LucideIcon } from "lucide-react";
+
+const ICON_MAP: Record<string, LucideIcon> = { Gem, Ruler, Home, Truck, Palette, ShieldCheck, Wrench, Hammer, Paintbrush, Droplets, Layers, Eye };
 
 const containerVariants = {
   hidden: {},
@@ -42,6 +44,21 @@ const cardVariants = {
 };
 
 export function ServicesSection() {
+  const [services, setServices] = useState(FALLBACK_SERVICES);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/services");
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setServices(data);
+        }
+      } catch {}
+    };
+    load();
+  }, []);
+
   return (
     <section id="services" className="section-padding bg-white">
       <div className="container-luxury">
@@ -75,8 +92,8 @@ export function ServicesSection() {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {SERVICES.map((service, index) => {
-            const Icon = ICON_MAP[service.icon];
+          {services.map((service, index) => {
+            const Icon = (ICON_MAP[service.icon] || Gem) as React.ComponentType<{ className?: string }>;
             return (
               <motion.div
                 key={index}

@@ -3,8 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowDown } from "lucide-react";
-import { HERO_SLIDES } from "@/lib/constants";
+import { HERO_SLIDES as FALLBACK_SLIDES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+
+type HeroSlide = { id: string; title: string; accent: string; description: string; image_url: string; sort_order?: number };
 
 const slideVariants = {
   enter: (direction: number) => ({
@@ -41,16 +43,34 @@ const textVariants = {
 export function HeroSection() {
   const [[currentSlide, direction], setSlide] = useState([0, 0]);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/hero");
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setSlides(data);
+        } else {
+          setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
+        }
+      } catch {
+        setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
+      }
+    };
+    load();
+  }, []);
 
   const paginate = useCallback(
     (newDirection: number) => {
+      if (slides.length === 0) return;
       setSlide([
-        (currentSlide + newDirection + HERO_SLIDES.length) %
-          HERO_SLIDES.length,
+        (currentSlide + newDirection + slides.length) % slides.length,
         newDirection,
       ]);
     },
-    [currentSlide]
+    [currentSlide, slides.length]
   );
 
   useEffect(() => {
@@ -59,7 +79,9 @@ export function HeroSection() {
     return () => clearInterval(timer);
   }, [isAutoPlaying, paginate]);
 
-  const slide = HERO_SLIDES[currentSlide];
+  const slide = slides[currentSlide];
+
+  if (!slide) return null;
 
   return (
     <section
@@ -86,7 +108,7 @@ export function HeroSection() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url(${slide.image})`,
+              backgroundImage: `url(${slide.image_url})`,
               backgroundColor: "#3d3a36",
             }}
           />
@@ -155,7 +177,7 @@ export function HeroSection() {
       </div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
-        {HERO_SLIDES.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setSlide([i, i > currentSlide ? 1 : -1])}

@@ -13,13 +13,29 @@ import {
   Menu,
   X,
   ExternalLink,
+  Sliders,
+  Wrench,
+  Settings,
 } from "lucide-react";
 import { useState } from "react";
 
-const navItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Portfolio", href: "/admin/portfolio", icon: Images },
-  { label: "Categories", href: "/admin/categories", icon: Tags },
+const navSections = [
+  {
+    label: "Content",
+    items: [
+      { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { label: "Hero Slides", href: "/admin/hero", icon: Sliders },
+      { label: "Services", href: "/admin/services", icon: Wrench },
+      { label: "Portfolio", href: "/admin/portfolio", icon: Images },
+      { label: "Categories", href: "/admin/categories", icon: Tags },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { label: "Settings", href: "/admin/settings", icon: Settings },
+    ],
+  },
 ];
 
 export function AdminSidebar() {
@@ -49,32 +65,37 @@ export function AdminSidebar() {
 
       <div className="mx-4 h-px bg-stone-800" />
 
-      <nav className="flex-1 px-3 py-5 space-y-1">
-        {navItems.map((item) => {
-          const isActive =
-            item.href === "/admin"
-              ? pathname === "/admin"
-              : pathname.startsWith(item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
-                isActive
-                  ? "bg-gradient-to-r from-bronze-600/20 to-bronze-500/10 text-bronze-400 shadow-sm"
-                  : "text-stone-400 hover:text-stone-200 hover:bg-stone-800/50"
-              )}
-            >
-              <item.icon className={cn("h-[18px] w-[18px]", isActive && "text-bronze-400")} />
-              {item.label}
-              {isActive && (
-                <div className="ml-auto h-1.5 w-1.5 rounded-full bg-bronze-400" />
-              )}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 px-3 py-5 space-y-5 overflow-y-auto">
+        {navSections.map((section) => (
+          <div key={section.label}>
+            <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-stone-600">{section.label}</p>
+            <div className="space-y-1">
+              {section.items.map((item) => {
+                const isActive =
+                  item.href === "/admin"
+                    ? pathname === "/admin"
+                    : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                      isActive
+                        ? "bg-gradient-to-r from-bronze-600/20 to-bronze-500/10 text-bronze-400 shadow-sm"
+                        : "text-stone-400 hover:text-stone-200 hover:bg-stone-800/50"
+                    )}
+                  >
+                    <item.icon className={cn("h-[18px] w-[18px]", isActive && "text-bronze-400")} />
+                    {item.label}
+                    {isActive && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-bronze-400" />}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       <div className="mx-4 h-px bg-stone-800" />

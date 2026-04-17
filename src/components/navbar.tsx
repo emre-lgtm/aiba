@@ -3,17 +3,35 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS as FALLBACK_NAV, SITE as FALLBACK_SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [siteName, setSiteName] = useState(FALLBACK_SITE.name);
+  const [navLinks, setNavLinks] = useState(FALLBACK_NAV);
+  const [phone, setPhone] = useState("+90 500 123 45 67");
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.site_name) setSiteName(data.site_name);
+          if (data.nav_links?.length) setNavLinks(data.nav_links);
+          if (data.phone) setPhone(data.phone);
+        }
+      } catch {}
+    };
+    load();
   }, []);
 
   return (
@@ -41,13 +59,13 @@ export function Navbar() {
               )}
               style={{ fontFamily: "var(--font-playfair)" }}
             >
-              {SITE.name}
+              {siteName}
             </span>
           </div>
         </a>
 
         <div className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -60,7 +78,7 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="tel:+905001234567"
+            href={`tel:${phone.replace(/\s/g, "")}`}
             className="flex items-center gap-2 bg-bronze-600 hover:bg-bronze-700 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors"
           >
             <Phone className="w-4 h-4" />
@@ -94,7 +112,7 @@ export function Navbar() {
             className="lg:hidden glass border-t border-stone-200/50"
           >
             <div className="container-luxury py-6 flex flex-col gap-4">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -105,7 +123,7 @@ export function Navbar() {
                 </a>
               ))}
               <a
-                href="tel:+905001234567"
+                href={`tel:${phone.replace(/\s/g, "")}`}
                 className="flex items-center justify-center gap-2 bg-bronze-600 text-white px-5 py-3 rounded-full font-medium mt-2"
               >
                 <Phone className="w-4 h-4" />
