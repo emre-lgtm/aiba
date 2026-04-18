@@ -1,19 +1,26 @@
-const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+(async () => {
+  const [{ execSync }, fs, path] = await Promise.all([
+    import("node:child_process"),
+    import("node:fs"),
+    import("node:path"),
+  ]);
 
-console.log("Building...");
-execSync("npm run build", { stdio: "inherit" });
+  console.log("Building...");
+  execSync("npm run build", { stdio: "inherit" });
 
-const standaloneDir = path.join(__dirname, ".next", "standalone");
-const staticDir = path.join(__dirname, ".next", "static");
-const publicDir = path.join(__dirname, "public");
+  const standaloneDir = path.join(__dirname, ".next", "standalone");
+  const staticDir = path.join(__dirname, ".next", "static");
+  const publicDir = path.join(__dirname, "public");
 
-const targetStatic = path.join(standaloneDir, ".next", "static");
-const targetPublic = path.join(standaloneDir, "public");
+  const targetStatic = path.join(standaloneDir, ".next", "static");
+  const targetPublic = path.join(standaloneDir, "public");
 
-fs.cpSync(staticDir, targetStatic, { recursive: true });
-fs.cpSync(publicDir, targetPublic, { recursive: true });
+  fs.cpSync(staticDir, targetStatic, { recursive: true });
+  fs.cpSync(publicDir, targetPublic, { recursive: true });
 
-console.log("Standalone build ready at .next/standalone/");
-console.log("Entry: node .next/standalone/server.js");
+  console.log("Standalone build ready at .next/standalone/");
+  console.log("Entry: node .next/standalone/server.js");
+})().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

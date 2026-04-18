@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Gem, Loader2, ArrowRight } from "lucide-react";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
@@ -36,42 +37,36 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#1c1917]">
-      <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917]">
+    <div className="flex min-h-screen bg-[#1c1917]">
+      <div className="relative hidden items-center justify-center bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917] lg:flex lg:w-1/2">
         <div className="absolute inset-0 bg-[url('/images/hero/hero-1.jpg')] bg-cover bg-center opacity-20" />
-        <div className="relative z-10 text-center px-12">
-          <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-bronze-400 to-bronze-600 shadow-2xl shadow-bronze-600/30">
-            <Gem className="h-10 w-10 text-white" />
-          </div>
+        <div className="relative z-10 px-12 text-center">
+          <Logo className="mx-auto mb-8 h-20 w-20 rounded-2xl shadow-2xl shadow-bronze-600/30" />
           <h1
-            className="text-4xl font-bold text-white mb-3"
+            className="mb-3 text-4xl font-bold text-white"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
             AIBA STONE
           </h1>
-          <p className="text-stone-400 text-lg">
-            Premium Natural Stone & Marble
-          </p>
+          <p className="text-lg text-stone-400">Premium Natural Stone & Marble</p>
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-12">
+      <div className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-3 mb-10 justify-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-bronze-400 to-bronze-600">
-              <Gem className="h-6 w-6 text-white" />
-            </div>
-            <span className="font-bold text-white text-xl">AIBA STONE</span>
+          <div className="mb-10 flex items-center justify-center gap-3 lg:hidden">
+            <Logo className="h-12 w-12 rounded-xl" />
+            <span className="text-xl font-bold text-white">AIBA STONE</span>
           </div>
 
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-white">Welcome back</h2>
-            <p className="text-stone-500 mt-2">Sign in to manage your portfolio</p>
+            <p className="mt-2 text-stone-500">Sign in to manage your portfolio</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-stone-400 text-xs font-medium uppercase tracking-wider">
+              <Label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-stone-400">
                 Email
               </Label>
               <Input
@@ -81,11 +76,11 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-11 bg-stone-800/50 border-stone-700 text-white placeholder:text-stone-600 focus:border-bronze-500 focus:ring-bronze-500/20"
+                className="h-11 border-stone-700 bg-stone-800/50 text-white placeholder:text-stone-600 focus:border-bronze-500 focus:ring-bronze-500/20"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-stone-400 text-xs font-medium uppercase tracking-wider">
+              <Label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-stone-400">
                 Password
               </Label>
               <Input
@@ -94,18 +89,18 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="h-11 bg-stone-800/50 border-stone-700 text-white placeholder:text-stone-600 focus:border-bronze-500 focus:ring-bronze-500/20"
+                className="h-11 border-stone-700 bg-stone-800/50 text-white placeholder:text-stone-600 focus:border-bronze-500 focus:ring-bronze-500/20"
               />
             </div>
             {error && (
-              <div className="p-3 rounded-lg bg-red-950/50 border border-red-900/50">
+              <div className="rounded-lg border border-red-900/50 bg-red-950/50 p-3">
                 <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-11 bg-gradient-to-r from-bronze-600 to-bronze-500 hover:from-bronze-500 hover:to-bronze-400 text-white font-medium shadow-lg shadow-bronze-600/20 transition-all duration-300"
+              className="h-11 w-full bg-gradient-to-r from-bronze-600 to-bronze-500 font-medium text-white shadow-lg shadow-bronze-600/20 transition-all duration-300 hover:from-bronze-500 hover:to-bronze-400"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
