@@ -3,6 +3,8 @@ export const SITE = {
   description:
     "Premium natural stone and marble solutions. Adding elegance to luxury spaces.",
   url: "https://www.aibastone.com",
+  address:
+    "AIBA DIS TICARET LIMITED SIRKETI, YENIGUN MAH. MEVLANA CAD. B BLOK NO: 54 B/203, MURATPASA-ANTALYA-TURKEY",
 };
 
 export const NAV_LINKS = [

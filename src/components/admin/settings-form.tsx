@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { SITE as FALLBACK_SITE } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +28,7 @@ const DEFAULT_SETTINGS: Settings = {
   site_url: "https://www.aibastone.com",
   phone: "+90 500 123 45 67",
   email: "info@aibastone.com",
-  address: "Antalya, Turkey",
+  address: FALLBACK_SITE.address,
   nav_links: [
     { label: "Home", href: "#hero" },
     { label: "Services", href: "#services" },
@@ -49,7 +50,14 @@ export function SettingsForm() {
         const res = await fetch("/api/settings");
         if (res.ok) {
           const data = await res.json();
-          setSettings({ ...DEFAULT_SETTINGS, ...data });
+          setSettings({
+            ...DEFAULT_SETTINGS,
+            ...data,
+            address:
+              data.address && data.address !== "Antalya, Turkey"
+                ? data.address
+                : DEFAULT_SETTINGS.address,
+          });
         }
       } catch {}
       setLoading(false);
@@ -145,7 +153,7 @@ export function SettingsForm() {
           </div>
           <div className="space-y-2">
             <Label className="text-xs font-medium uppercase tracking-wider text-stone-500"><MapPin className="inline h-3 w-3 mr-1" />Address</Label>
-            <Input value={settings.address} onChange={(e) => setSettings({ ...settings, address: e.target.value })} placeholder="Antalya, Turkey" className="h-11" />
+            <Input value={settings.address} onChange={(e) => setSettings({ ...settings, address: e.target.value })} placeholder={DEFAULT_SETTINGS.address} className="h-11" />
           </div>
         </CardContent>
       </Card>

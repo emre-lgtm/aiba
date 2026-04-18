@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { SITE as FALLBACK_SITE } from "@/lib/constants";
 
 export function ContactSection() {
   const [phone, setPhone] = useState("+90 500 123 45 67");
   const [email, setEmail] = useState("info@aibastone.com");
-  const [address, setAddress] = useState("Antalya, Turkey");
+  const [address, setAddress] = useState(FALLBACK_SITE.address);
 
   useEffect(() => {
     const load = async () => {
@@ -17,12 +18,15 @@ export function ContactSection() {
           const data = await res.json();
           if (data.phone) setPhone(data.phone);
           if (data.email) setEmail(data.email);
-          if (data.address) setAddress(data.address);
+          if (data.address && data.address !== "Antalya, Turkey") setAddress(data.address);
         }
       } catch {}
     };
     load();
   }, []);
+
+  const mapQuery = encodeURIComponent(address.replace(/\s+/g, " ").trim());
+  const mapSrc = `https://www.google.com/maps?q=${mapQuery}&z=17&output=embed`;
 
   const contactInfo = [
     { icon: MapPin, label: "Address", value: address },
@@ -92,14 +96,14 @@ export function ContactSection() {
 
             <div className="mt-12 rounded-2xl overflow-hidden h-64 bg-stone-200">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101847.856678625!2d30.6896!3d36.8969!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c39592b7491b5f%3A0x3b14c4c41d0d9c0e!2sAntalya%2C%20Turkey!5e0!3m2!1sen!2s!4v1700000000000"
+                src={mapSrc}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Location Map"
+                title={`Location Map - ${address}`}
               />
             </div>
           </motion.div>

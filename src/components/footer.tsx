@@ -9,7 +9,7 @@ export function Footer() {
   const [siteName, setSiteName] = useState(FALLBACK_SITE.name);
   const [phone, setPhone] = useState("+90 500 123 45 67");
   const [email, setEmail] = useState("info@aibastone.com");
-  const [address, setAddress] = useState("Antalya, Turkey");
+  const [address, setAddress] = useState(FALLBACK_SITE.address);
   const [navLinks, setNavLinks] = useState(FALLBACK_NAV);
   const [footerText, setFooterText] = useState("Premium Natural Stone & Marble Solutions");
   const [siteDescription, setSiteDescription] = useState("Premium natural stone and marble solutions adding value to your spaces. Quality, aesthetics, and reliability.");
@@ -23,7 +23,7 @@ export function Footer() {
           if (data.site_name) setSiteName(data.site_name);
           if (data.phone) setPhone(data.phone);
           if (data.email) setEmail(data.email);
-          if (data.address) setAddress(data.address);
+          if (data.address && data.address !== "Antalya, Turkey") setAddress(data.address);
           if (data.nav_links?.length) setNavLinks(data.nav_links);
           if (data.footer_text) setFooterText(data.footer_text);
           if (data.site_description) setSiteDescription(data.site_description);
