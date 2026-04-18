@@ -20,23 +20,9 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
-import { ArrowLeft, Loader2, Upload, X, Sparkles, Wand2 } from "lucide-react";
+import { ArrowLeft, Loader2, Upload, X } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-
-type Category = { id: string; name: string; slug: string };
-
-const PROMPT_TEMPLATES: Record<string, string> = {
-  Kitchen: "Professional architectural photography of a luxury kitchen with {stone} marble countertop, warm natural lighting, high-end interior design, photorealistic, 8k quality",
-  Bathroom: "Professional architectural photography of a luxury bathroom with {stone} marble cladding and surfaces, spa-like atmosphere, soft lighting, photorealistic, 8k quality",
-  Flooring: "Professional architectural photography of {stone} marble flooring in a grand entrance hall, polished surface reflecting light, elegant interior, photorealistic, 8k quality",
-  Exterior: "Professional architectural photography of a luxury villa exterior with {stone} natural stone facade cladding, golden hour lighting, photorealistic, 8k quality",
-};
-
-function buildPrompt(stoneType: string, categoryName: string) {
-  const template = PROMPT_TEMPLATES[categoryName] || PROMPT_TEMPLATES["Kitchen"];
-  return template.replace("{stone}", stoneType);
-}
 
 export function PortfolioForm({ itemId }: { itemId?: string }) {
   const router = useRouter();
@@ -45,7 +31,7 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
 
   const [saving, setSaving] = useState(false);
   const [loadingItem, setLoadingItem] = useState(isEditing);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
   const [title, setTitle] = useState("");
   const [stoneType, setStoneType] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -54,11 +40,6 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
   const [sortOrder, setSortOrder] = useState(0);
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [generating, setGenerating] = useState(false);
-  const [customPrompt, setCustomPrompt] = useState("");
-  const [showAiPanel, setShowAiPanel] = useState(false);
-
-  const selectedCategory = categories.find((c) => c.id === categoryId);
 
   useEffect(() => {
     let cancelled = false;
@@ -112,61 +93,6 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
     setImageUrl(urlData.publicUrl);
     setUploading(false);
     toast.success("Image uploaded");
-  };
-
-  const handleGenerateImage = async () => {
-    if (!stoneType) {
-      toast.error("Enter stone type first");
-      return;
-    }
-
-    setGenerating(true);
-    const categoryName = selectedCategory?.name || "Kitchen";
-    const prompt = customPrompt || buildPrompt(stoneType, categoryName);
-
-    try {
-      const res = await fetch("/api/generate-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, size: "1280x1280" }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.error || "Image generation failed");
-        setGenerating(false);
-        return;
-      }
-
-      const aiImageUrl = data.url;
-
-      const downloadRes = await fetch(aiImageUrl);
-      const blob = await downloadRes.blob();
-      const ext = aiImageUrl.split(".").pop()?.split("?")[0] || "png";
-      const path = `${crypto.randomUUID()}.${ext}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("portfolio-images")
-        .upload(path, blob, { contentType: blob.type || "image/png" });
-
-      if (uploadError) {
-        toast.error("Failed to save generated image");
-        setGenerating(false);
-        return;
-      }
-
-      const { data: urlData } = supabase.storage
-        .from("portfolio-images")
-        .getPublicUrl(path);
-
-      setImageUrl(urlData.publicUrl);
-      toast.success("AI image generated and saved");
-    } catch {
-      toast.error("Image generation failed");
-    }
-
-    setGenerating(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -329,51 +255,7 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
         <div className="lg:col-span-2 space-y-4">
           <Card className="border-0 shadow-sm overflow-hidden">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <Label className="text-xs font-medium uppercase tracking-wider text-stone-500">Image *</Label>
-                <button
-                  type="button"
-                  onClick={() => setShowAiPanel(!showAiPanel)}
-                  className="flex items-center gap-1.5 text-xs font-medium text-bronze-600 hover:text-bronze-700 transition-colors"
-                >
-                  <Sparkles className="h-3.5 w-3.5" />
-                  AI Generate
-                </button>
-              </div>
-
-              {showAiPanel && (
-                <div className="mb-4 p-3 rounded-xl bg-stone-50 border border-stone-200 space-y-3">
-                  <Textarea
-                    value={customPrompt}
-                    onChange={(e) => setCustomPrompt(e.target.value)}
-                    placeholder={
-                      stoneType
-                        ? buildPrompt(stoneType, selectedCategory?.name || "Kitchen")
-                        : "Enter stone type first..."
-                    }
-                    rows={3}
-                    className="text-xs"
-                  />
-                  <Button
-                    type="button"
-                    onClick={handleGenerateImage}
-                    disabled={generating || !stoneType}
-                    className="w-full h-9 bg-gradient-to-r from-bronze-600 to-bronze-500 hover:from-bronze-500 hover:to-bronze-400 text-white text-xs"
-                  >
-                    {generating ? (
-                      <>
-                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        <Wand2 className="mr-1.5 h-3.5 w-3.5" />
-                        Generate with AI
-                      </>
-                    )}
-                  </Button>
-                </div>
-              )}
+              <Label className="text-xs font-medium uppercase tracking-wider text-stone-500 mb-3 block">Image *</Label>
 
               {imageUrl ? (
                 <div className="relative rounded-xl overflow-hidden aspect-[4/3] group">
@@ -395,7 +277,6 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
                   <span className="text-sm font-medium text-stone-500">
                     {uploading ? "Uploading..." : "Upload image"}
                   </span>
-                  <span className="text-[11px] text-stone-400 mt-1">or use AI Generate above</span>
                   <input
                     type="file"
                     accept="image/*"

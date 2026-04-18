@@ -16,6 +16,7 @@ import {
   Sliders,
   Wrench,
   Settings,
+  Building2,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -28,6 +29,7 @@ const navSections = [
       { label: "Services", href: "/admin/services", icon: Wrench },
       { label: "Portfolio", href: "/admin/portfolio", icon: Images },
       { label: "Categories", href: "/admin/categories", icon: Tags },
+      { label: "About Us", href: "/admin/about", icon: Building2 },
     ],
   },
   {

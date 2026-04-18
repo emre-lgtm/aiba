@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Loader2, Upload, X, Sparkles, Wand2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Upload, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type Slide = {
@@ -40,9 +40,6 @@ export function HeroManager() {
   const [sortOrder, setSortOrder] = useState(1);
   const [isActive, setIsActive] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [generating, setGenerating] = useState(false);
-  const [showAi, setShowAi] = useState(false);
-  const [customPrompt, setCustomPrompt] = useState("");
   const supabase = createClient();
 
   useEffect(() => {
@@ -98,29 +95,6 @@ export function HeroManager() {
     setImageUrl(urlData.publicUrl);
     setUploading(false);
     toast.success("Image uploaded");
-  };
-
-  const handleGenerate = async () => {
-    setGenerating(true);
-    const prompt = customPrompt || `Professional architectural photography of a luxury natural stone and marble showroom, elegant interior design with premium stone slabs on display, warm lighting, high-end atmosphere, photorealistic, 8k quality`;
-    try {
-      const res = await fetch("/api/generate-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, size: "1728x960" }),
-      });
-      const data = await res.json();
-      if (!res.ok) { toast.error(data.error || "Generation failed"); setGenerating(false); return; }
-      const downloadRes = await fetch(data.url);
-      const blob = await downloadRes.blob();
-      const path = `${crypto.randomUUID()}.png`;
-      const { error } = await supabase.storage.from("hero-images").upload(path, blob, { contentType: "image/png" });
-      if (error) { toast.error("Save failed"); setGenerating(false); return; }
-      const { data: urlData } = supabase.storage.from("hero-images").getPublicUrl(path);
-      setImageUrl(urlData.publicUrl);
-      toast.success("AI image generated");
-    } catch { toast.error("Generation failed"); }
-    setGenerating(false);
   };
 
   const handleSave = async () => {
@@ -192,20 +166,7 @@ export function HeroManager() {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label className="text-xs font-medium uppercase tracking-wider text-stone-500">Image</Label>
-                <button type="button" onClick={() => setShowAi(!showAi)} className="flex items-center gap-1.5 text-xs font-medium text-bronze-600 hover:text-bronze-700">
-                  <Sparkles className="h-3.5 w-3.5" /> AI Generate
-                </button>
-              </div>
-              {showAi && (
-                <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 space-y-3">
-                  <Textarea value={customPrompt} onChange={(e) => setCustomPrompt(e.target.value)} placeholder="Luxury marble showroom, warm lighting..." rows={2} className="text-xs" />
-                  <Button type="button" onClick={handleGenerate} disabled={generating} className="w-full h-9 bg-gradient-to-r from-bronze-600 to-bronze-500 text-white text-xs">
-                    {generating ? <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />Generating...</> : <><Wand2 className="mr-1.5 h-3.5 w-3.5" />Generate with AI</>}
-                  </Button>
-                </div>
-              )}
+              <Label className="text-xs font-medium uppercase tracking-wider text-stone-500">Image</Label>
               {imageUrl ? (
                 <div className="relative rounded-xl overflow-hidden aspect-video group">
                   <Image src={imageUrl} alt="Preview" fill className="object-cover" />

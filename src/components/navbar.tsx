@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
+import { Logo } from "@/components/logo";
 import { NAV_LINKS as FALLBACK_NAV, SITE as FALLBACK_SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -46,11 +47,7 @@ export function Navbar() {
     >
       <nav className="container-luxury flex items-center justify-between h-20">
         <a href="#hero" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-gradient-to-br from-bronze-500 to-bronze-700 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm tracking-tight">
-              AS
-            </span>
-          </div>
+          <Logo className="w-10 h-10" />
           <div>
             <span
               className={cn(

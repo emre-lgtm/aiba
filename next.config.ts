@@ -11,14 +11,6 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
-      {
-        protocol: "https",
-        hostname: "*.bigmodel.cn",
-      },
-      {
-        protocol: "https",
-        hostname: "sfile.chatglm.cn",
-      },
     ],
   },
 };

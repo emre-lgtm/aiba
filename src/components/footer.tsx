@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { Logo } from "@/components/logo";
 import { SITE as FALLBACK_SITE, NAV_LINKS as FALLBACK_NAV } from "@/lib/constants";
 
 export function Footer() {
@@ -38,9 +39,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-bronze-500 to-bronze-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">AS</span>
-              </div>
+              <Logo className="w-10 h-10" />
               <span
                 className="text-2xl font-bold text-white"
                 style={{ fontFamily: "var(--font-playfair)" }}

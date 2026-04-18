@@ -163,6 +163,25 @@ INSERT INTO site_settings (id, data) VALUES (1, '{
     {"label": "About", "href": "#about"},
     {"label": "Contact", "href": "#contact"}
   ],
-  "footer_text": "Premium Natural Stone & Marble Solutions"
+  "footer_text": "Premium Natural Stone & Marble Solutions",
+  "about": {
+    "subtitle": "About Us",
+    "title": "Crafting Timeless Beauty",
+    "title_accent": "Timeless",
+    "description": "For over 15 years, AIBA STONE has been the premier destination for luxury natural stone. We source the world''s finest marble, travertine, and limestone to transform your vision into reality.",
+    "image_url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80",
+    "badge_value": "15+",
+    "badge_label": "Years of Excellence",
+    "section_title": "From Quarry to Your Space",
+    "section_p1": "We partner directly with quarries in Italy, Turkey, India, and Brazil to bring you the rarest and most exquisite natural stones. Every slab is hand-selected by our expert team to ensure uncompromising quality.",
+    "section_p2": "Our master craftsmen combine traditional techniques with cutting-edge CNC technology to deliver precision results that exceed expectations. From concept to installation, we handle every detail.",
+    "features": ["Premium Quality Materials", "Expert Craftsmanship", "Global Sourcing", "Turnkey Solutions"],
+    "stats": [
+      {"icon": "Award", "value": "15+", "label": "Years Experience"},
+      {"icon": "Users", "value": "500+", "label": "Happy Clients"},
+      {"icon": "Globe", "value": "30+", "label": "Countries Served"},
+      {"icon": "TrendingUp", "value": "2000+", "label": "Projects Completed"}
+    ]
+  }
 }'::jsonb)
 ON CONFLICT (id) DO NOTHING;
