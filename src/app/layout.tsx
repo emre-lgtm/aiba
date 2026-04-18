@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Playfair_Display } from "next/font/google";
+import { FaviconSync } from "@/components/favicon-sync";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,7 +40,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${playfair.variable} antialiased`}
     >
-      <body className="min-h-screen bg-stone-50 text-stone-900">{children}</body>
+      <body className="min-h-screen bg-stone-50 text-stone-900">
+        <FaviconSync />
+        {children}
+      </body>
     </html>
   );
 }

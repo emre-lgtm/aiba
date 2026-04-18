@@ -53,7 +53,9 @@ export function AdminSidebar() {
     <div className="flex h-full flex-col bg-[#1c1917]">
       <div className="px-5 py-6">
         <div className="flex items-center gap-3">
-          <Logo className="h-10 w-10 shrink-0 rounded-xl shadow-lg shadow-bronze-600/20" />
+          <span className="flex shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-lg shadow-bronze-600/20">
+            <Logo className="h-7 w-auto max-w-24" />
+          </span>
           <div>
             <p className="font-bold tracking-tight text-white">AIBA STONE</p>
             <p className="text-[11px] uppercase tracking-wider text-stone-500">Admin Panel</p>
@@ -131,7 +133,9 @@ export function AdminSidebar() {
 
       <div className="fixed left-0 right-0 top-0 z-40 flex items-center justify-between bg-[#1c1917] px-4 py-3 lg:hidden">
         <div className="flex items-center gap-3">
-          <Logo className="h-8 w-8 shrink-0 rounded-lg" />
+          <span className="flex shrink-0 items-center justify-center rounded-lg bg-white p-1">
+            <Logo className="h-6 w-auto max-w-20" />
+          </span>
           <span className="text-sm font-bold text-white">AIBA STONE</span>
         </div>
         <button

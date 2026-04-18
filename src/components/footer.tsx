@@ -39,7 +39,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <Logo className="w-10 h-10" />
+              <span className="flex items-center justify-center rounded-lg bg-white p-1.5 shadow-sm">
+                <Logo className="h-7 w-auto max-w-24" />
+              </span>
               <span
                 className="text-2xl font-bold text-white"
                 style={{ fontFamily: "var(--font-playfair)" }}

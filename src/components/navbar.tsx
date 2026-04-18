@@ -47,7 +47,16 @@ export function Navbar() {
     >
       <nav className="container-luxury flex items-center justify-between h-20">
         <a href="#hero" className="flex items-center gap-3 group">
-          <Logo className="w-10 h-10" />
+          <span
+            className={cn(
+              "flex items-center justify-center rounded-lg p-1.5 shadow-sm transition-colors",
+              isScrolled
+                ? "bg-white ring-1 ring-stone-200"
+                : "bg-white/95 ring-1 ring-white/20"
+            )}
+          >
+            <Logo className="h-7 w-auto max-w-24" />
+          </span>
           <div>
             <span
               className={cn(

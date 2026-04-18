@@ -41,7 +41,9 @@ export default function AdminLoginPage() {
       <div className="relative hidden items-center justify-center bg-gradient-to-br from-[#1c1917] via-[#292524] to-[#1c1917] lg:flex lg:w-1/2">
         <div className="absolute inset-0 bg-[url('/images/hero/hero-1.jpg')] bg-cover bg-center opacity-20" />
         <div className="relative z-10 px-12 text-center">
-          <Logo className="mx-auto mb-8 h-20 w-20 rounded-2xl shadow-2xl shadow-bronze-600/30" />
+          <span className="mx-auto mb-8 flex w-fit items-center justify-center rounded-2xl bg-white p-3 shadow-2xl shadow-bronze-600/30">
+            <Logo className="h-14 w-auto max-w-40" />
+          </span>
           <h1
             className="mb-3 text-4xl font-bold text-white"
             style={{ fontFamily: "var(--font-playfair)" }}
@@ -55,7 +57,9 @@ export default function AdminLoginPage() {
       <div className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm">
           <div className="mb-10 flex items-center justify-center gap-3 lg:hidden">
-            <Logo className="h-12 w-12 rounded-xl" />
+            <span className="flex items-center justify-center rounded-xl bg-white p-1.5">
+              <Logo className="h-8 w-auto max-w-24" />
+            </span>
             <span className="text-xl font-bold text-white">AIBA STONE</span>
           </div>
 

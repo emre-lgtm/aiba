@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { SITE as FALLBACK_SITE } from "@/lib/constants";
 
 export function ContactSection() {
@@ -32,7 +32,6 @@ export function ContactSection() {
     { icon: MapPin, label: "Address", value: address },
     { icon: Phone, label: "Phone", value: phone, href: `tel:${phone.replace(/\s/g, "")}` },
     { icon: Mail, label: "Email", value: email, href: `mailto:${email}` },
-    { icon: Clock, label: "Working Hours", value: "Mon - Sat: 09:00 - 18:00" },
   ];
 
   return (

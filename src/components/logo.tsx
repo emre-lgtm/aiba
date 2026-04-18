@@ -1,36 +1,75 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import {
+  DEFAULT_LOGO_SRC,
+  getLogoSrc,
+  LOGO_UPDATED_EVENT,
+} from "@/lib/site-settings";
+
+let cachedLogoSrc = DEFAULT_LOGO_SRC;
+let pendingLogoRequest: Promise<string> | null = null;
+
+async function loadLogoSrc() {
+  if (pendingLogoRequest) {
+    return pendingLogoRequest;
+  }
+
+  pendingLogoRequest = fetch("/api/settings")
+    .then(async (response) => {
+      if (!response.ok) {
+        return DEFAULT_LOGO_SRC;
+      }
+
+      const data = await response.json();
+      return getLogoSrc(data.logo_data_url);
+    })
+    .catch(() => DEFAULT_LOGO_SRC)
+    .then((logoSrc) => {
+      cachedLogoSrc = logoSrc;
+      pendingLogoRequest = null;
+      return logoSrc;
+    });
+
+  return pendingLogoRequest;
+}
+
 export function Logo({ className }: { className?: string }) {
+  const [src, setSrc] = useState(cachedLogoSrc);
+
+  useEffect(() => {
+    let active = true;
+
+    loadLogoSrc().then((logoSrc) => {
+      if (active) {
+        setSrc(logoSrc);
+      }
+    });
+
+    const handleLogoUpdated = (event: Event) => {
+      const nextSrc = getLogoSrc((event as CustomEvent<string>).detail);
+      cachedLogoSrc = nextSrc;
+      setSrc(nextSrc);
+    };
+
+    window.addEventListener(LOGO_UPDATED_EVENT, handleLogoUpdated);
+
+    return () => {
+      active = false;
+      window.removeEventListener(LOGO_UPDATED_EVENT, handleLogoUpdated);
+    };
+  }, []);
+
   return (
-    <svg
-      viewBox="0 0 40 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      <rect width="40" height="40" rx="8" className="fill-bronze-600" />
-      <path
-        d="M8 28L20 10L32 28"
-        stroke="white"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.9"
-      />
-      <path
-        d="M12 28L20 16L28 28"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.6"
-      />
-      <path
-        d="M20 10V28"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        opacity="0.4"
-      />
-      <circle cx="20" cy="10" r="1.5" fill="white" opacity="0.9" />
-    </svg>
+    <Image
+      src={src}
+      alt="AIBA STONE logo"
+      width={240}
+      height={120}
+      unoptimized
+      className={cn("shrink-0 object-contain", className)}
+    />
   );
 }
