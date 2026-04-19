@@ -53,16 +53,18 @@ export function AboutSection() {
   const [about, setAbout] = useState(DEFAULT_ABOUT);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         const res = await fetch("/api/settings");
         if (res.ok) {
           const data = await res.json();
-          if (data.about) setAbout({ ...DEFAULT_ABOUT, ...data.about });
+          if (active && data.about) setAbout({ ...DEFAULT_ABOUT, ...data.about });
         }
       } catch {}
     };
     load();
+    return () => { active = false; };
   }, []);
 
   return (

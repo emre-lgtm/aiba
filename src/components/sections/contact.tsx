@@ -11,11 +11,13 @@ export function ContactSection() {
   const [address, setAddress] = useState(FALLBACK_SITE.address);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         const res = await fetch("/api/settings");
         if (res.ok) {
           const data = await res.json();
+          if (!active) return;
           if (data.phone) setPhone(data.phone);
           if (data.email) setEmail(data.email);
           if (data.address && data.address !== "Antalya, Turkey") setAddress(data.address);
@@ -23,6 +25,7 @@ export function ContactSection() {
       } catch {}
     };
     load();
+    return () => { active = false; };
   }, []);
 
   const mapQuery = encodeURIComponent(address.replace(/\s+/g, " ").trim());

@@ -15,11 +15,13 @@ export function Footer() {
   const [siteDescription, setSiteDescription] = useState("Premium natural stone and marble solutions adding value to your spaces. Quality, aesthetics, and reliability.");
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         const res = await fetch("/api/settings");
         if (res.ok) {
           const data = await res.json();
+          if (!active) return;
           if (data.site_name) setSiteName(data.site_name);
           if (data.phone) setPhone(data.phone);
           if (data.email) setEmail(data.email);
@@ -31,6 +33,7 @@ export function Footer() {
       } catch {}
     };
     load();
+    return () => { active = false; };
   }, []);
 
   return (

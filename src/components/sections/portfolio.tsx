@@ -43,6 +43,7 @@ export function PortfolioSection() {
   const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
+    let active = true;
     const fetchData = async () => {
       try {
         const [portfolioRes, categoriesRes] = await Promise.all([
@@ -51,6 +52,7 @@ export function PortfolioSection() {
         ]);
         const portfolioData = await portfolioRes.json();
         const categoriesData = await categoriesRes.json();
+        if (!active) return;
 
         if (Array.isArray(portfolioData) && portfolioData.length > 0) {
           setItems(portfolioData.map(toUiItem));
@@ -70,6 +72,7 @@ export function PortfolioSection() {
           setCategories([...FALLBACK_CATEGORIES]);
         }
       } catch {
+        if (!active) return;
         setItems(
           FALLBACK_ITEMS.map((item) => ({
             id: String(item.id),
@@ -84,6 +87,7 @@ export function PortfolioSection() {
       }
     };
     fetchData();
+    return () => { active = false; };
   }, []);
 
   const filteredItems =

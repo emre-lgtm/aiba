@@ -44,7 +44,7 @@ export function FaviconSync() {
 
         const logoSrc = getLogoSrc(data.logo_data_url);
         updateFavicon(
-          logoSrc === DEFAULT_LOGO_SRC ? `/icon?v=${Date.now()}` : logoSrc
+          logoSrc === DEFAULT_LOGO_SRC ? `/icon?v=${crypto.randomUUID()}` : logoSrc
         );
       } catch {}
     };
@@ -54,7 +54,7 @@ export function FaviconSync() {
     const handleLogoUpdated = (event: Event) => {
       const nextSrc = getLogoSrc((event as CustomEvent<string>).detail);
       updateFavicon(
-        nextSrc === DEFAULT_LOGO_SRC ? `/icon?v=${Date.now()}` : nextSrc
+        nextSrc === DEFAULT_LOGO_SRC ? `/icon?v=${crypto.randomUUID()}` : nextSrc
       );
     };
 

@@ -21,11 +21,13 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         const res = await fetch("/api/settings");
         if (res.ok) {
           const data = await res.json();
+          if (!active) return;
           if (data.site_name) setSiteName(data.site_name);
           if (data.nav_links?.length) setNavLinks(data.nav_links);
           if (data.phone) setPhone(data.phone);
@@ -33,6 +35,7 @@ export function Navbar() {
       } catch {}
     };
     load();
+    return () => { active = false; };
   }, []);
 
   return (

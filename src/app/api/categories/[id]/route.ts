@@ -1,7 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
-export async function PUT(request: Request) {
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -9,12 +12,8 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { id, ...updates } = body;
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  }
+  const { id } = await params;
+  const updates = await request.json();
 
   const { data, error } = await supabase
     .from("portfolio_categories")
@@ -29,7 +28,10 @@ export async function PUT(request: Request) {
   return NextResponse.json(data);
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -37,12 +39,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  }
+  const { id } = await params;
 
   const { error } = await supabase
     .from("portfolio_categories")

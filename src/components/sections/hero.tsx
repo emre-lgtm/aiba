@@ -46,20 +46,23 @@ export function HeroSection() {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         const res = await fetch("/api/hero");
         const data = await res.json();
+        if (!active) return;
         if (Array.isArray(data) && data.length > 0) {
           setSlides(data);
         } else {
           setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
         }
       } catch {
-        setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
+        if (active) setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
       }
     };
     load();
+    return () => { active = false; };
   }, []);
 
   const paginate = useCallback(

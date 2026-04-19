@@ -47,16 +47,19 @@ export function ServicesSection() {
   const [services, setServices] = useState(FALLBACK_SERVICES);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         const res = await fetch("/api/services");
         const data = await res.json();
+        if (!active) return;
         if (Array.isArray(data) && data.length > 0) {
           setServices(data);
         }
       } catch {}
     };
     load();
+    return () => { active = false; };
   }, []);
 
   return (
