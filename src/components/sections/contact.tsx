@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { SITE as FALLBACK_SITE } from "@/lib/constants";
+import { springs, staggerContainer, staggerItem, sectionHeader, easings } from "@/lib/motion";
+import { Magnetic } from "@/components/motion/magnetic";
 
 export function ContactSection() {
   const [phone, setPhone] = useState("+90 500 123 45 67");
@@ -37,14 +39,23 @@ export function ContactSection() {
     { icon: Mail, label: "Email", value: email, href: `mailto:${email}` },
   ];
 
+  const inputFocus = {
+    initial: { borderColor: "#d6d3d1" },
+    focus: {
+      borderColor: "#a86c2d",
+      boxShadow: "0 0 0 3px rgba(168, 108, 45, 0.1)",
+      transition: springs.snappy,
+    },
+  };
+
   return (
     <section id="contact" className="section-padding bg-white">
       <div className="container-luxury">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={sectionHeader}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
@@ -64,17 +75,33 @@ export function ContactSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: easings.enter }}
           >
-            <div className="space-y-8">
+            <motion.div
+              variants={staggerContainer(0.1)}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
               {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-start gap-4 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-bronze-100 to-bronze-200 rounded-xl flex items-center justify-center shrink-0 group-hover:from-bronze-500 group-hover:to-bronze-700 transition-all duration-500">
+                <motion.div
+                  key={item.label}
+                  variants={staggerItem}
+                  className="flex items-start gap-4 group"
+                >
+                  <motion.div
+                    className="w-12 h-12 bg-gradient-to-br from-bronze-100 to-bronze-200 rounded-xl flex items-center justify-center shrink-0"
+                    whileHover={{
+                      background: "linear-gradient(135deg, #a86c2d, #8c5525)",
+                      transition: springs.snappy,
+                    }}
+                  >
                     <item.icon className="w-5 h-5 text-bronze-700 group-hover:text-white transition-colors duration-500" />
-                  </div>
+                  </motion.div>
                   <div>
                     <span className="text-stone-400 text-sm font-medium block mb-1">
                       {item.label}
@@ -92,11 +119,17 @@ export function ContactSection() {
                       </span>
                     )}
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            <div className="mt-12 rounded-2xl overflow-hidden h-64 bg-stone-200">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.4, ease: easings.enter }}
+              className="mt-12 rounded-2xl overflow-hidden h-64 bg-stone-200"
+            >
               <iframe
                 src={mapSrc}
                 width="100%"
@@ -107,14 +140,14 @@ export function ContactSection() {
                 referrerPolicy="no-referrer-when-downgrade"
                 title={`Location Map - ${address}`}
               />
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: easings.enter }}
           >
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -131,24 +164,28 @@ export function ContactSection() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                <div>
+                <motion.div whileFocus={inputFocus}>
                   <label className="text-sm font-medium text-stone-700 mb-2 block">
                     Full Name
                   </label>
-                  <input
+                  <motion.input
                     type="text"
                     placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-bronze-500/20 focus:border-bronze-500 transition-all"
+                    whileFocus={inputFocus.focus}
+                    transition={springs.snappy}
+                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none transition-all"
                   />
-                </div>
+                </motion.div>
                 <div>
                   <label className="text-sm font-medium text-stone-700 mb-2 block">
                     Email Address
                   </label>
-                  <input
+                  <motion.input
                     type="email"
                     placeholder="john@example.com"
-                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-bronze-500/20 focus:border-bronze-500 transition-all"
+                    whileFocus={inputFocus.focus}
+                    transition={springs.snappy}
+                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none transition-all"
                   />
                 </div>
               </div>
@@ -158,17 +195,23 @@ export function ContactSection() {
                   <label className="text-sm font-medium text-stone-700 mb-2 block">
                     Phone Number
                   </label>
-                  <input
+                  <motion.input
                     type="tel"
                     placeholder="+90 555 123 45 67"
-                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-bronze-500/20 focus:border-bronze-500 transition-all"
+                    whileFocus={inputFocus.focus}
+                    transition={springs.snappy}
+                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-stone-700 mb-2 block">
                     Stone Type
                   </label>
-                  <select className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 focus:outline-none focus:ring-2 focus:ring-bronze-500/20 focus:border-bronze-500 transition-all">
+                  <motion.select
+                    whileFocus={inputFocus.focus}
+                    transition={springs.snappy}
+                    className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 focus:outline-none transition-all"
+                  >
                     <option value="">Select stone type</option>
                     <option value="marble">Marble</option>
                     <option value="travertine">Travertine</option>
@@ -176,7 +219,7 @@ export function ContactSection() {
                     <option value="granite">Granite</option>
                     <option value="onyx">Onyx</option>
                     <option value="other">Other</option>
-                  </select>
+                  </motion.select>
                 </div>
               </div>
 
@@ -184,20 +227,26 @@ export function ContactSection() {
                 <label className="text-sm font-medium text-stone-700 mb-2 block">
                   Message
                 </label>
-                <textarea
+                <motion.textarea
                   rows={4}
                   placeholder="Tell us about your project..."
-                  className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-bronze-500/20 focus:border-bronze-500 transition-all resize-none"
+                  whileFocus={inputFocus.focus}
+                  transition={springs.snappy}
+                  className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 placeholder:text-stone-400 focus:outline-none transition-all resize-none"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-bronze-600 hover:bg-bronze-700 text-white px-8 py-4 rounded-xl font-medium transition-all hover:shadow-lg hover:shadow-bronze-600/25"
-              >
-                <Send className="w-4 h-4" />
-                Send Message
-              </button>
+              <Magnetic strength={0.1}>
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02, boxShadow: "0 10px 25px -5px rgba(168, 108, 45, 0.3)" }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full flex items-center justify-center gap-2 bg-bronze-600 hover:bg-bronze-700 text-white px-8 py-4 rounded-xl font-medium transition-colors cursor-pointer"
+                >
+                  <Send className="w-4 h-4" />
+                  Send Message
+                </motion.button>
+              </Magnetic>
             </form>
           </motion.div>
         </div>

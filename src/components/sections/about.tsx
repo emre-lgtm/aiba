@@ -1,25 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  Award,
-  Users,
-  Globe,
-  TrendingUp,
-  Gem,
-  Ruler,
-  Home,
-  Truck,
-  Palette,
-  ShieldCheck,
-  Wrench,
-  Hammer,
-  Paintbrush,
-  Droplets,
-  Layers,
-  Eye,
+  Award, Users, Globe, TrendingUp, Gem, Ruler, Home, Truck,
+  Palette, ShieldCheck, Wrench, Hammer, Paintbrush, Droplets, Layers, Eye,
 } from "lucide-react";
+import { springs, staggerContainer, staggerItem, sectionHeader, easings } from "@/lib/motion";
+import { CountUp } from "@/components/motion/count-up";
 
 import type { LucideIcon } from "lucide-react";
 
@@ -49,8 +37,33 @@ const DEFAULT_ABOUT = {
   ],
 };
 
+const imageRevealVariants = {
+  hidden: { clipPath: "inset(100% 0 0 0)" },
+  visible: {
+    clipPath: "inset(0% 0 0 0)",
+    transition: { duration: 1.2, ease: easings.enter },
+  },
+};
+
+const badgeRevealVariants = {
+  hidden: { scale: 0, rotate: -15 },
+  visible: {
+    scale: 1,
+    rotate: 0,
+    transition: { ...springs.bouncy, delay: 0.6 },
+  },
+};
+
 export function AboutSection() {
   const [about, setAbout] = useState(DEFAULT_ABOUT);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "center center"],
+  });
+
+  const badgeY = useTransform(scrollYProgress, [0, 1], [40, -20]);
 
   useEffect(() => {
     let active = true;
@@ -68,13 +81,13 @@ export function AboutSection() {
   }, []);
 
   return (
-    <section id="about" className="section-padding bg-stone-50">
+    <section ref={sectionRef} id="about" className="section-padding bg-stone-50">
       <div className="container-luxury">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={sectionHeader}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
@@ -95,10 +108,10 @@ export function AboutSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
+            variants={imageRevealVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
           >
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden">
@@ -110,7 +123,14 @@ export function AboutSection() {
                   }}
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-bronze-600 rounded-2xl flex items-center justify-center text-white">
+              <motion.div
+                style={{ y: badgeY }}
+                variants={badgeRevealVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="absolute -bottom-6 -right-6 w-48 h-48 bg-bronze-600 rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-bronze-900/30"
+              >
                 <div className="text-center">
                   <span
                     className="text-4xl font-bold block"
@@ -120,15 +140,15 @@ export function AboutSection() {
                   </span>
                   <span className="text-sm opacity-90">{about.badge_label}</span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: easings.enter }}
           >
             <h3
               className="text-2xl md:text-3xl font-bold text-stone-900 mb-6"
@@ -138,39 +158,57 @@ export function AboutSection() {
             </h3>
             <p className="text-stone-500 leading-relaxed mb-6">{about.section_p1}</p>
             <p className="text-stone-500 leading-relaxed mb-8">{about.section_p2}</p>
-            <div className="flex flex-wrap gap-4">
+            <motion.div
+              variants={staggerContainer(0.1)}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex flex-wrap gap-4"
+            >
               {about.features.map((f) => (
-                <div key={f} className="flex items-center gap-2 text-sm text-stone-600">
+                <motion.div
+                  key={f}
+                  variants={staggerItem}
+                  className="flex items-center gap-2 text-sm text-stone-600"
+                >
                   <div className="w-2 h-2 rounded-full bg-bronze-500" />
                   {f}
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={staggerContainer(0.15)}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.7 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-8"
         >
           {about.stats.map((stat: Stat) => {
             const Icon = ICON_MAP[stat.icon] || Award;
             return (
-              <div key={stat.label} className="text-center group">
-                <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-bronze-100 to-bronze-200 rounded-xl flex items-center justify-center group-hover:from-bronze-500 group-hover:to-bronze-700 transition-all duration-500">
-                  <Icon className="w-7 h-7 text-bronze-700 group-hover:text-white transition-colors duration-500" />
-                </div>
-                <span
-                  className="text-3xl md:text-4xl font-bold text-stone-900 block"
-                  style={{ fontFamily: "var(--font-playfair)" }}
+              <motion.div
+                key={stat.label}
+                variants={staggerItem}
+                className="text-center group"
+              >
+                <motion.div
+                  className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-bronze-100 to-bronze-200 rounded-xl flex items-center justify-center"
+                  whileHover={{
+                    background: "linear-gradient(135deg, #a86c2d, #8c5525)",
+                    transition: springs.snappy,
+                  }}
                 >
-                  {stat.value}
-                </span>
+                  <Icon className="w-7 h-7 text-bronze-700 group-hover:text-white transition-colors duration-500" />
+                </motion.div>
+                <CountUp
+                  target={stat.value}
+                  className="text-3xl md:text-4xl font-bold text-stone-900 block"
+                />
                 <span className="text-stone-500 text-sm mt-1 block">{stat.label}</span>
-              </div>
+              </motion.div>
             );
           })}
         </motion.div>
