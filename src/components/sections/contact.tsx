@@ -122,25 +122,6 @@ export function ContactSection() {
                 </motion.div>
               ))}
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.4, ease: easings.enter }}
-              className="mt-12 rounded-2xl overflow-hidden h-64 bg-stone-200"
-            >
-              <iframe
-                src={mapSrc}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title={`Location Map - ${address}`}
-              />
-            </motion.div>
           </motion.div>
 
           <motion.div
