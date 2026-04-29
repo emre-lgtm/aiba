@@ -31,8 +31,8 @@ export function Footer() {
     offset: ["start end", "end end"],
   });
 
-  const footerOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
-  const footerY = useTransform(scrollYProgress, [0, 0.3], [60, 0]);
+  const footerOpacity = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
+  const footerY = useTransform(scrollYProgress, [0, 0.3], [30, 0]);
 
   useEffect(() => {
     let active = true;

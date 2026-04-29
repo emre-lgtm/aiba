@@ -160,7 +160,7 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
             {isEditing ? "Edit Item" : "New Item"}
           </h1>
           <p className="text-stone-500 text-sm mt-0.5">
-            {isEditing ? "Update portfolio entry" : "Add to your portfolio"}
+            {isEditing ? "Update material entry" : "Add new material"}
           </p>
         </div>
       </div>

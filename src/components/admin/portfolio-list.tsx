@@ -49,7 +49,7 @@ export function PortfolioList() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this portfolio item?")) return;
+    if (!confirm("Delete this material?")) return;
     const res = await fetch(`/api/portfolio/${id}`, { method: "DELETE" });
     if (res.ok) {
       toast.success("Portfolio item deleted");
@@ -69,7 +69,7 @@ export function PortfolioList() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">Portfolio</h1>
+          <h1 className="text-2xl font-bold text-stone-900">Materials</h1>
           <p className="text-stone-500 text-sm mt-1">
             {items.length} {items.length === 1 ? "item" : "items"} total
           </p>
@@ -127,7 +127,7 @@ export function PortfolioList() {
             <Plus className="h-7 w-7 text-stone-400" />
           </div>
           <p className="text-stone-500 font-medium">
-            {search ? "No items match your search" : "No portfolio items yet"}
+            {search ? "No items match your search" : "No materials yet"}
           </p>
           {!search && (
             <Link href="/admin/portfolio/new">

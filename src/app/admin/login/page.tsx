@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
 
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-white">Welcome back</h2>
-            <p className="mt-2 text-stone-500">Sign in to manage your portfolio</p>
+            <p className="mt-2 text-stone-500">Sign in to manage your materials</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">

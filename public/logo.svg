@@ -1,24 +1,17 @@
 <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="stone-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#a86c2d"/>
-      <stop offset="50%" stop-color="#c4853a"/>
       <stop offset="100%" stop-color="#8c5525"/>
     </linearGradient>
-    <linearGradient id="stone-light" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d49a4e"/>
-      <stop offset="100%" stop-color="#e4b87e"/>
-    </linearGradient>
   </defs>
-  <rect x="24" y="24" width="152" height="152" rx="32" fill="url(#stone-grad)"/>
-  <path d="M100 56 L132 84 L132 140 Q132 148 124 148 L76 148 Q68 148 68 140 L68 84 Z" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M100 56 L132 84 L100 84 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linejoin="round"/>
-  <rect x="88" y="108" width="24" height="40" rx="4" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2.5"/>
-  <line x1="80" y1="96" x2="92" y2="96" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-linecap="round"/>
-  <line x1="108" y1="96" x2="120" y2="96" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-linecap="round"/>
-  <line x1="80" y1="104" x2="92" y2="104" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="108" y1="104" x2="120" y2="104" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
-  <path d="M100 52 L100 40" stroke="url(#stone-light)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
-  <path d="M70 65 L62 55" stroke="url(#stone-light)" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-  <path d="M130 65 L138 55" stroke="url(#stone-light)" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+  <rect width="200" height="200" rx="44" fill="url(#bg)"/>
+  <path d="M100 36 L152 78 L152 158 Q152 168 142 168 L58 168 Q48 168 48 158 L48 78 Z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round" opacity="0.9"/>
+  <path d="M100 36 L152 78 L100 78 Z" fill="white" opacity="0.15"/>
+  <path d="M100 36 L152 78 L100 78 Z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round" opacity="0.9"/>
+  <rect x="82" y="126" width="36" height="42" rx="5" fill="none" stroke="white" stroke-width="4" opacity="0.9"/>
+  <line x1="100" y1="126" x2="100" y2="168" stroke="white" stroke-width="3" opacity="0.4"/>
+  <rect x="62" y="94" width="24" height="18" rx="3" fill="none" stroke="white" stroke-width="3" opacity="0.5"/>
+  <rect x="114" y="94" width="24" height="18" rx="3" fill="none" stroke="white" stroke-width="3" opacity="0.5"/>
+  <line x1="56" y1="168" x2="144" y2="168" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.3"/>
 </svg>

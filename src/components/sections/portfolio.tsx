@@ -181,13 +181,13 @@ export function PortfolioSection() {
           className="text-center max-w-2xl mx-auto mb-12"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
-            Portfolio
+            Materials
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Featured <span className="text-gradient">Projects</span>
+            Featured <span className="text-gradient">Materials</span>
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed">
             Every project is a work of art that brings the unique beauty of

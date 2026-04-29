@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
                 <TrendingUp className="h-4 w-4 text-emerald-500" />
               </div>
               <p className="text-3xl font-bold text-stone-900">{stats.portfolioCount}</p>
-              <p className="text-sm text-stone-500 mt-1">Portfolio Items</p>
+              <p className="text-sm text-stone-500 mt-1">Materials</p>
             </CardContent>
           </Card>
 
@@ -84,7 +84,7 @@ export default async function AdminDashboard() {
                 </div>
                 <div>
                   <p className="text-lg font-semibold">Add New Item</p>
-                  <p className="text-sm text-stone-400 mt-1">Create a portfolio entry</p>
+                  <p className="text-sm text-stone-400 mt-1">Add a new material</p>
                 </div>
               </CardContent>
             </Card>
