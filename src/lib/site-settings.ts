@@ -14,7 +14,7 @@ export type SiteSettings = {
   logo_data_url: string;
 };
 
-export const DEFAULT_LOGO_SRC = "/logo.svg";
+export const DEFAULT_LOGO_SRC = "/logo.png";
 export const LOGO_UPDATED_EVENT = "aiba:logo-updated";
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {

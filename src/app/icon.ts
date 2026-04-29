@@ -15,9 +15,9 @@ function buildResponse(body: BodyInit, contentType: string) {
 }
 
 async function getFallbackLogo() {
-  const fallbackPath = path.join(process.cwd(), "public", "logo.svg");
+  const fallbackPath = path.join(process.cwd(), "public", "logo.png");
   const fallbackBody = await readFile(fallbackPath);
-  return buildResponse(fallbackBody, "image/svg+xml");
+  return buildResponse(fallbackBody, "image/png");
 }
 
 export default async function Icon() {
