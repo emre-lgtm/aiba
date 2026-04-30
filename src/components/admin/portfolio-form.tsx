@@ -120,7 +120,7 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
         setSaving(false);
         return;
       }
-      toast.success("Portfolio item updated");
+      toast.success("Material updated");
     } else {
       const res = await fetch("/api/portfolio", {
         method: "POST",
@@ -132,7 +132,7 @@ export function PortfolioForm({ itemId }: { itemId?: string }) {
         setSaving(false);
         return;
       }
-      toast.success("Portfolio item created");
+      toast.success("Material created");
     }
 
     setSaving(false);

@@ -134,7 +134,7 @@ export function Navbar() {
           <div className="w-px h-6 bg-stone-200/50 mx-3" />
           <Magnetic strength={0.12}>
             <motion.a
-              href={`tel:${phone.replace(/\s/g, "")}`}
+                href={`https://wa.me/${phone.replace(/[^0-9]/g, "").replace(/^0/, "")}`}
               whileHover={{ scale: 1.05, boxShadow: "0 8px 20px -4px rgba(168, 108, 45, 0.35)" }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-2 bg-gradient-to-r from-bronze-500 to-bronze-700 hover:from-bronze-400 hover:to-bronze-600 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all"
@@ -208,7 +208,7 @@ export function Navbar() {
               ))}
               <motion.a
                 variants={staggerItem}
-                href={`tel:${phone.replace(/\s/g, "")}`}
+              href={`https://wa.me/${phone.replace(/[^0-9]/g, "").replace(/^0/, "")}`}
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-bronze-500 to-bronze-700 text-white px-5 py-3 rounded-full font-medium mt-2"
               >
                 <Phone className="w-4 h-4" />

@@ -52,7 +52,7 @@ export function PortfolioList() {
     if (!confirm("Delete this material?")) return;
     const res = await fetch(`/api/portfolio/${id}`, { method: "DELETE" });
     if (res.ok) {
-      toast.success("Portfolio item deleted");
+      toast.success("Material deleted");
       fetchItems();
     } else {
       toast.error("Failed to delete");

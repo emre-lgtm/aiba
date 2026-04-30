@@ -35,7 +35,7 @@ export function ContactSection() {
 
   const contactInfo = [
     { icon: MapPin, label: "Address", value: address },
-    { icon: Phone, label: "Phone", value: phone, href: `tel:${phone.replace(/\s/g, "")}` },
+    { icon: Phone, label: "Phone", value: phone, href: `https://wa.me/${phone.replace(/[^0-9]/g, "").replace(/^0/, "")}` },
     { icon: Mail, label: "Email", value: email, href: `mailto:${email}` },
   ];
 

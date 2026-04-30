@@ -116,7 +116,7 @@ export function CategoriesManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this category? Portfolio items will lose their category reference.")) return;
+    if (!confirm("Delete this category? Materials will lose their category reference.")) return;
     const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });
     if (res.ok) {
       toast.success("Category deleted");

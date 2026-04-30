@@ -119,7 +119,7 @@ export function Footer() {
               >
                 <Phone className="w-5 h-5 text-bronze-500 shrink-0" />
                 <a
-                  href={`tel:${phone.replace(/\s/g, "")}`}
+                  href={`https://wa.me/${phone.replace(/[^0-9]/g, "").replace(/^0/, "")}`}
                   className="text-stone-400 hover:text-bronze-400 transition-colors"
                 >
                   {phone}
