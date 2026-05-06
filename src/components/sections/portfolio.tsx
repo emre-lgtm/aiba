@@ -10,6 +10,7 @@ import {
 } from "@/lib/constants";
 import { springs, staggerContainer, staggerItem, sectionHeader, easings } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
+import { useSettings } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 
 type PortfolioItem = {
@@ -71,6 +72,10 @@ export function PortfolioSection() {
   const [lightboxDirection, setLightboxDirection] = useState(0);
   const [items, setItems] = useState<ReturnType<typeof toUiItem>[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const { sections } = useSettings();
+  const sec = sections.portfolio;
+  const titleBase = sec.title.replace(sec.title_accent, "").trim();
+  const titleAccentFirst = sec.title.startsWith(sec.title_accent);
 
   useEffect(() => {
     let active = true;
@@ -181,17 +186,20 @@ export function PortfolioSection() {
           className="text-center max-w-2xl mx-auto mb-12"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
-            Materials
+            {sec.subtitle}
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Featured <span className="text-gradient">Materials</span>
+            {titleAccentFirst ? (
+              <><span className="text-gradient">{sec.title_accent}</span>{" "}{titleBase}</>
+            ) : (
+              <>{titleBase}{" "}<span className="text-gradient">{sec.title_accent}</span></>
+            )}
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed">
-            Every project is a work of art that brings the unique beauty of
-            natural stone to life in your spaces.
+            {sec.description}
           </p>
         </motion.div>
 

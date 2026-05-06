@@ -185,3 +185,45 @@ INSERT INTO site_settings (id, data) VALUES (1, '{
   }
 }'::jsonb)
 ON CONFLICT (id) DO NOTHING;
+
+-- ============================================
+-- v3 — Hero slide buttons + section headers
+-- Run in Supabase SQL Editor if upgrading from v2
+-- ============================================
+
+-- Add buttons column to hero_slides (safe to run multiple times)
+ALTER TABLE hero_slides ADD COLUMN IF NOT EXISTS buttons jsonb DEFAULT '[]'::jsonb;
+
+-- Update seed data with default buttons
+UPDATE hero_slides
+SET buttons = '[
+  {"label": "View Our Projects", "href": "#portfolio", "style": "primary"},
+  {"label": "Get a Quote", "href": "#contact", "style": "outline"}
+]'::jsonb
+WHERE buttons IS NULL OR buttons = '[]'::jsonb;
+
+-- Update site_settings seed with section headers
+UPDATE site_settings
+SET data = data || '{
+  "sections": {
+    "services": {
+      "subtitle": "What We Do",
+      "title": "Our Services",
+      "title_accent": "Services",
+      "description": "With our expertise in the natural stone world, we are with you at every stage of your project. Comprehensive solutions from supply to installation."
+    },
+    "portfolio": {
+      "subtitle": "Materials",
+      "title": "Featured Materials",
+      "title_accent": "Materials",
+      "description": "Every project is a work of art that brings the unique beauty of natural stone to life in your spaces."
+    },
+    "contact": {
+      "subtitle": "Get In Touch",
+      "title": "Contact Us",
+      "title_accent": "Us",
+      "description": "Ready to transform your space with natural stone? Get in touch with our team for a free consultation and quote."
+    }
+  }
+}'::jsonb
+WHERE id = 1 AND NOT (data ? 'sections');

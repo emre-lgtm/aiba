@@ -1,0 +1,38 @@
+import {
+  Award,
+  Users,
+  Globe,
+  TrendingUp,
+  Gem,
+  Ruler,
+  Home,
+  Truck,
+  Palette,
+  ShieldCheck,
+  Wrench,
+  Hammer,
+  Paintbrush,
+  Droplets,
+  Layers,
+  Eye,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+export const ICON_MAP: Record<string, LucideIcon> = {
+  Award,
+  Users,
+  Globe,
+  TrendingUp,
+  Gem,
+  Ruler,
+  Home,
+  Truck,
+  Palette,
+  ShieldCheck,
+  Wrench,
+  Hammer,
+  Paintbrush,
+  Droplets,
+  Layers,
+  Eye,
+};

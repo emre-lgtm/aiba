@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Logo } from "@/components/logo";
-import { SITE as FALLBACK_SITE, NAV_LINKS as FALLBACK_NAV } from "@/lib/constants";
 import { staggerContainer, staggerItem, springs, easings } from "@/lib/motion";
+import { useSettings } from "@/hooks/use-settings";
 
 const footerLinkVariants = {
   hidden: { opacity: 0, x: -15 },
@@ -17,13 +17,7 @@ const footerLinkVariants = {
 };
 
 export function Footer() {
-  const [siteName, setSiteName] = useState(FALLBACK_SITE.name);
-  const [phone, setPhone] = useState("+90 500 123 45 67");
-  const [email, setEmail] = useState("info@aibastone.com");
-  const [address, setAddress] = useState(FALLBACK_SITE.address);
-  const [navLinks, setNavLinks] = useState(FALLBACK_NAV);
-  const [footerText, setFooterText] = useState("Premium Natural Stone & Marble Solutions");
-  const [siteDescription, setSiteDescription] = useState("Premium natural stone and marble solutions adding value to your spaces. Quality, aesthetics, and reliability.");
+  const { site_name, phone, email, address, nav_links, footer_text, site_description } = useSettings();
   const footerRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -33,28 +27,6 @@ export function Footer() {
 
   const footerOpacity = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
   const footerY = useTransform(scrollYProgress, [0, 0.3], [30, 0]);
-
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      try {
-        const res = await fetch("/api/settings");
-        if (res.ok) {
-          const data = await res.json();
-          if (!active) return;
-          if (data.site_name) setSiteName(data.site_name);
-          if (data.phone) setPhone(data.phone);
-          if (data.email) setEmail(data.email);
-          if (data.address && data.address !== "Antalya, Turkey") setAddress(data.address);
-          if (data.nav_links?.length) setNavLinks(data.nav_links);
-          if (data.footer_text) setFooterText(data.footer_text);
-          if (data.site_description) setSiteDescription(data.site_description);
-        }
-      } catch {}
-    };
-    load();
-    return () => { active = false; };
-  }, []);
 
   return (
     <footer ref={footerRef} className="bg-stone-900 text-stone-300 overflow-hidden">
@@ -78,18 +50,18 @@ export function Footer() {
                 className="text-2xl font-bold text-white"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
-                {siteName}
+                {site_name}
               </span>
             </div>
             <p className="text-stone-400 leading-relaxed max-w-md">
-              {siteDescription}
+              {site_description}
             </p>
           </motion.div>
 
           <motion.div variants={staggerItem}>
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
-              {navLinks.map((item) => (
+              {nav_links.map((item) => (
                 <motion.li key={item.href} variants={footerLinkVariants}>
                   <motion.a
                     href={item.href}
@@ -149,10 +121,10 @@ export function Footer() {
           className="mt-16 pt-8 border-t border-stone-800 flex flex-col md:flex-row items-center justify-between gap-4"
         >
           <p className="text-stone-500 text-sm">
-            &copy; {new Date().getFullYear()} {siteName}. All rights reserved.
+            &copy; {new Date().getFullYear()} {site_name}. All rights reserved.
           </p>
           <p className="text-stone-600 text-xs">
-            {footerText}
+            {footer_text}
           </p>
         </motion.div>
       </motion.div>

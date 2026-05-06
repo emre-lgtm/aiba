@@ -8,7 +8,13 @@ import { springs, easings } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
 import { cn } from "@/lib/utils";
 
-type HeroSlide = { id: string; title: string; accent: string; description: string; image_url: string; sort_order?: number };
+type HeroButton = { label: string; href: string; style: "primary" | "outline" };
+type HeroSlide = { id: string; title: string; accent: string; description: string; image_url: string; sort_order?: number; buttons?: HeroButton[] };
+
+const DEFAULT_BUTTONS: HeroButton[] = [
+  { label: "View Our Projects", href: "#portfolio", style: "primary" },
+  { label: "Get a Quote", href: "#contact", style: "outline" },
+];
 
 const textVariants = {
   hidden: { opacity: 0, y: 50, filter: "blur(10px)" },
@@ -217,32 +223,40 @@ export function HeroSection() {
                 variants={textVariants}
                 className="flex flex-wrap gap-4"
               >
-                <Magnetic strength={0.15}>
-                  <motion.a
-                    href="#portfolio"
-                    whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(168, 108, 45, 0.4)" }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2.5 bg-gradient-to-r from-bronze-500 to-bronze-700 hover:from-bronze-400 hover:to-bronze-600 text-white px-9 py-4 rounded-full font-medium transition-all text-base"
-                  >
-                    View Our Projects
-                    <motion.span
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      →
-                    </motion.span>
-                  </motion.a>
-                </Magnetic>
-                <Magnetic strength={0.15}>
-                  <motion.a
-                    href="#contact"
-                    whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.5)" }}
-                    whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 border-2 border-white/25 text-white px-9 py-4 rounded-full font-medium transition-all hover:bg-white/10 text-base backdrop-blur-sm"
-                  >
-                    Get a Quote
-                  </motion.a>
-                </Magnetic>
+                {(slide?.buttons && slide.buttons.length > 0
+                  ? slide.buttons
+                  : DEFAULT_BUTTONS
+                ).map((btn, i) =>
+                  btn.style === "primary" ? (
+                    <Magnetic key={i} strength={0.15}>
+                      <motion.a
+                        href={btn.href}
+                        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(168, 108, 45, 0.4)" }}
+                        whileTap={{ scale: 0.97 }}
+                        className="inline-flex items-center gap-2.5 bg-gradient-to-r from-bronze-500 to-bronze-700 hover:from-bronze-400 hover:to-bronze-600 text-white px-9 py-4 rounded-full font-medium transition-all text-base"
+                      >
+                        {btn.label}
+                        <motion.span
+                          animate={{ x: [0, 4, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                          →
+                        </motion.span>
+                      </motion.a>
+                    </Magnetic>
+                  ) : (
+                    <Magnetic key={i} strength={0.15}>
+                      <motion.a
+                        href={btn.href}
+                        whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.5)" }}
+                        whileTap={{ scale: 0.97 }}
+                        className="inline-flex items-center gap-2 border-2 border-white/25 text-white px-9 py-4 rounded-full font-medium transition-all hover:bg-white/10 text-base backdrop-blur-sm"
+                      >
+                        {btn.label}
+                      </motion.a>
+                    </Magnetic>
+                  )
+                )}
               </motion.div>
             </motion.div>
           </AnimatePresence>

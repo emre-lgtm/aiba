@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import { Logo } from "@/components/logo";
-import { NAV_LINKS as FALLBACK_NAV, SITE as FALLBACK_SITE } from "@/lib/constants";
 import { springs, staggerContainer, staggerItem, easings } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
+import { useSettings } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 
 const mobileMenuVariants = {
@@ -26,12 +26,10 @@ const mobileMenuVariants = {
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [siteName, setSiteName] = useState(FALLBACK_SITE.name);
-  const [navLinks, setNavLinks] = useState(FALLBACK_NAV);
-  const [phone, setPhone] = useState("+90 500 123 45 67");
   const [isHidden, setIsHidden] = useState(false);
   const lastScrollY = useRef(0);
 
+  const { site_name, nav_links, phone } = useSettings();
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -44,24 +42,6 @@ export function Navbar() {
     }
     lastScrollY.current = latest;
   });
-
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      try {
-        const res = await fetch("/api/settings");
-        if (res.ok) {
-          const data = await res.json();
-          if (!active) return;
-          if (data.site_name) setSiteName(data.site_name);
-          if (data.nav_links?.length) setNavLinks(data.nav_links);
-          if (data.phone) setPhone(data.phone);
-        }
-      } catch {}
-    };
-    load();
-    return () => { active = false; };
-  }, []);
 
   return (
     <motion.header
@@ -97,7 +77,7 @@ export function Navbar() {
                 )}
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
-                {siteName}
+                {site_name}
               </span>
               <span className={cn(
                 "text-[10px] tracking-[0.2em] uppercase font-medium transition-colors duration-500",
@@ -110,7 +90,7 @@ export function Navbar() {
         </Magnetic>
 
         <div className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link, i) => (
+          {nav_links.map((link, i) => (
             <motion.a
               key={link.href}
               href={link.href}
@@ -195,7 +175,7 @@ export function Navbar() {
               animate="visible"
               className="container-luxury py-6 flex flex-col gap-1"
             >
-              {navLinks.map((link) => (
+              {nav_links.map((link) => (
                 <motion.a
                   key={link.href}
                   variants={staggerItem}

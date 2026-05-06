@@ -9,6 +9,7 @@ import {
 import { SERVICES as FALLBACK_SERVICES } from "@/lib/constants";
 import { staggerContainer, staggerItem, sectionHeader, springs, easings } from "@/lib/motion";
 import { TiltCard } from "@/components/motion/tilt-card";
+import { useSettings } from "@/hooks/use-settings";
 
 import type { LucideIcon } from "lucide-react";
 
@@ -16,6 +17,12 @@ const ICON_MAP: Record<string, LucideIcon> = { Gem, Ruler, Home, Truck, Palette,
 
 export function ServicesSection() {
   const [services, setServices] = useState(FALLBACK_SERVICES);
+  const { sections } = useSettings();
+  const sec = sections.services;
+
+  // Split title into base + accent for gradient highlight
+  const titleBase = sec.title.replace(sec.title_accent, "").trim();
+  const titleAccentFirst = sec.title.startsWith(sec.title_accent);
 
   useEffect(() => {
     let active = true;
@@ -44,18 +51,20 @@ export function ServicesSection() {
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
-            What We Do
+            {sec.subtitle}
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Our <span className="text-gradient">Services</span>
+            {titleAccentFirst ? (
+              <><span className="text-gradient">{sec.title_accent}</span>{" "}{titleBase}</>
+            ) : (
+              <>{titleBase}{" "}<span className="text-gradient">{sec.title_accent}</span></>
+            )}
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed">
-            With our expertise in the natural stone world, we are with you at
-            every stage of your project. Comprehensive solutions from supply to
-            installation.
+            {sec.description}
           </p>
         </motion.div>
 

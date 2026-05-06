@@ -1,34 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {} from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { SITE as FALLBACK_SITE } from "@/lib/constants";
 import { springs, staggerContainer, staggerItem, sectionHeader, easings } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
+import { useSettings } from "@/hooks/use-settings";
 
 export function ContactSection() {
-  const [phone, setPhone] = useState("+90 500 123 45 67");
-  const [email, setEmail] = useState("info@aibastone.com");
-  const [address, setAddress] = useState(FALLBACK_SITE.address);
-
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      try {
-        const res = await fetch("/api/settings");
-        if (res.ok) {
-          const data = await res.json();
-          if (!active) return;
-          if (data.phone) setPhone(data.phone);
-          if (data.email) setEmail(data.email);
-          if (data.address && data.address !== "Antalya, Turkey") setAddress(data.address);
-        }
-      } catch {}
-    };
-    load();
-    return () => { active = false; };
-  }, []);
+  const { phone, email, address, sections } = useSettings();
+  const sec = sections.contact;
+  const titleBase = sec.title.replace(sec.title_accent, "").trim();
+  const titleAccentFirst = sec.title.startsWith(sec.title_accent);
 
   const mapQuery = encodeURIComponent(address.replace(/\s+/g, " ").trim());
   const mapSrc = `https://www.google.com/maps?q=${mapQuery}&z=17&output=embed`;
@@ -59,17 +43,20 @@ export function ContactSection() {
           className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="text-bronze-600 text-sm font-semibold tracking-[0.2em] uppercase">
-            Get In Touch
+            {sec.subtitle}
           </span>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mt-4 mb-6"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            Contact <span className="text-gradient">Us</span>
+            {titleAccentFirst ? (
+              <><span className="text-gradient">{sec.title_accent}</span>{" "}{titleBase}</>
+            ) : (
+              <>{titleBase}{" "}<span className="text-gradient">{sec.title_accent}</span></>
+            )}
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed">
-            Ready to transform your space with natural stone? Get in touch with
-            our team for a free consultation and quote.
+            {sec.description}
           </p>
         </motion.div>
 
