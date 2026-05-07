@@ -183,7 +183,7 @@ function Lightbox({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 sm:p-4"
       onClick={onClose}
     >
       <motion.div
@@ -238,26 +238,26 @@ function Lightbox({
         </div>
 
         {/* Info + thumbnails */}
-        <div className="mt-4 flex gap-4 items-start">
+        <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
           <div className="flex-1 min-w-0">
-            <h3 className="text-white font-bold text-lg leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
+            <h3 className="text-white font-bold text-base md:text-lg leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
               {item.title}
             </h3>
-            <p className="text-white/60 text-sm mt-1">{item.stone} {item.category !== "Other" ? `· ${item.category}` : ""}</p>
+            <p className="text-white/60 text-xs md:text-sm mt-1">{item.stone}{item.category !== "Other" ? ` · ${item.category}` : ""}</p>
             {item.description && (
-              <p className="text-white/50 text-sm mt-2 line-clamp-2">{item.description}</p>
+              <p className="text-white/50 text-xs md:text-sm mt-1.5 line-clamp-2">{item.description}</p>
             )}
           </div>
 
           {/* Thumbnail strip */}
           {item.images.length > 1 && (
-            <div className="flex gap-2 shrink-0 overflow-x-auto max-w-xs pb-1">
+            <div className="flex gap-2 shrink-0 overflow-x-auto max-w-full sm:max-w-xs pb-1">
               {item.images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setIdx(i)}
                   className={cn(
-                    "relative w-14 h-14 rounded-lg overflow-hidden shrink-0 transition-all",
+                    "relative w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden shrink-0 transition-all",
                     i === idx ? "ring-2 ring-white scale-105" : "opacity-50 hover:opacity-80"
                   )}
                 >
@@ -371,7 +371,7 @@ export function PortfolioSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-4 md:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
         >
           {filtered.map((item) => (
             <MaterialCard

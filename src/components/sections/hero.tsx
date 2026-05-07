@@ -168,7 +168,7 @@ export function HeroSection() {
         style={{ opacity: contentOpacity, y: contentY }}
         className="absolute inset-0 z-10 flex items-center"
       >
-        <div className="container-luxury">
+        <div className="container-luxury px-5 sm:px-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -180,13 +180,13 @@ export function HeroSection() {
               <motion.div
                 custom={0.1}
                 variants={lineVariants}
-                className="w-20 h-[2px] bg-gradient-to-r from-bronze-400 to-transparent mb-8 origin-left"
+                className="w-14 md:w-20 h-[2px] bg-gradient-to-r from-bronze-400 to-transparent mb-5 md:mb-8 origin-left"
               />
 
               <motion.span
                 custom={0.15}
                 variants={textVariants}
-                className="inline-flex items-center gap-3 text-bronze-300 text-sm md:text-base font-medium tracking-[0.25em] uppercase mb-6"
+                className="inline-flex items-center gap-3 text-bronze-300 text-xs md:text-base font-medium tracking-[0.2em] uppercase mb-4 md:mb-6"
               >
                 <span className="w-2 h-2 rounded-full bg-bronze-400 animate-pulse" />
                 AIBA STONE
@@ -195,7 +195,7 @@ export function HeroSection() {
               <motion.h1
                 custom={0.25}
                 variants={textVariants}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.08] mb-6"
+                className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.08] mb-4 md:mb-6"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {slide?.title || "Natural Stone"}
@@ -206,7 +206,7 @@ export function HeroSection() {
               <motion.p
                 custom={0.45}
                 variants={textVariants}
-                className="text-white/65 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
+                className="text-white/65 text-sm md:text-xl max-w-xl leading-relaxed mb-7 md:mb-10"
               >
                 {slide?.description || "Premium natural stone and marble solutions for luxury spaces."}
               </motion.p>
@@ -214,7 +214,7 @@ export function HeroSection() {
               <motion.div
                 custom={0.6}
                 variants={textVariants}
-                className="flex flex-wrap gap-4"
+                className="flex flex-wrap gap-3"
               >
                 {(slide?.buttons && slide.buttons.length > 0
                   ? slide.buttons
@@ -226,15 +226,13 @@ export function HeroSection() {
                         href={btn.href}
                         whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(168, 108, 45, 0.4)" }}
                         whileTap={{ scale: 0.97 }}
-                        className="inline-flex items-center gap-2.5 bg-gradient-to-r from-bronze-500 to-bronze-700 hover:from-bronze-400 hover:to-bronze-600 text-white px-9 py-4 rounded-full font-medium transition-all text-base"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-bronze-500 to-bronze-700 hover:from-bronze-400 hover:to-bronze-600 text-white px-6 py-3 md:px-9 md:py-4 rounded-full font-medium transition-all text-sm md:text-base"
                       >
                         {btn.label}
                         <motion.span
                           animate={{ x: [0, 4, 0] }}
                           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                          →
-                        </motion.span>
+                        >→</motion.span>
                       </motion.a>
                     </Magnetic>
                   ) : (
@@ -243,7 +241,7 @@ export function HeroSection() {
                         href={btn.href}
                         whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.5)" }}
                         whileTap={{ scale: 0.97 }}
-                        className="inline-flex items-center gap-2 border-2 border-white/25 text-white px-9 py-4 rounded-full font-medium transition-all hover:bg-white/10 text-base backdrop-blur-sm"
+                        className="inline-flex items-center gap-2 border-2 border-white/25 text-white px-6 py-3 md:px-9 md:py-4 rounded-full font-medium transition-all hover:bg-white/10 text-sm md:text-base backdrop-blur-sm"
                       >
                         {btn.label}
                       </motion.a>
@@ -292,10 +290,10 @@ export function HeroSection() {
           onClick={() => paginate(-1)}
           whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
           whileTap={{ scale: 0.9 }}
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3.5 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/10 cursor-pointer"
+          className="hidden sm:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 md:p-3.5 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/10 cursor-pointer items-center justify-center"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
         </motion.button>
       </Magnetic>
       <Magnetic strength={0.2}>
@@ -303,17 +301,17 @@ export function HeroSection() {
           onClick={() => paginate(1)}
           whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
           whileTap={{ scale: 0.9 }}
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3.5 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/10 cursor-pointer"
+          className="hidden sm:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 md:p-3.5 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/10 cursor-pointer items-center justify-center"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
         </motion.button>
       </Magnetic>
 
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+        className="hidden sm:flex absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2"
       >
         <span className="text-white/40 text-[10px] tracking-[0.3em] uppercase font-medium">Scroll</span>
         <div className="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center p-1.5">

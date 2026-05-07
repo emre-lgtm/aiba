@@ -106,7 +106,7 @@ export function AboutSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center mb-14 md:mb-20">
           <motion.div
             variants={imageRevealVariants}
             initial="hidden"
@@ -129,7 +129,7 @@ export function AboutSection() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="absolute -bottom-6 -right-6 w-48 h-48 bg-bronze-600 rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-bronze-900/30"
+                className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-32 h-32 md:w-48 md:h-48 bg-bronze-600 rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-bronze-900/30"
               >
                 <div className="text-center">
                   <span
@@ -184,7 +184,7 @@ export function AboutSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
         >
           {about.stats.map((stat: Stat) => {
             const Icon = ICON_MAP[stat.icon] || Award;

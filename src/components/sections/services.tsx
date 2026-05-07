@@ -6,7 +6,6 @@ import {
   Gem, Ruler, Home, Truck, Palette, ShieldCheck,
   Wrench, Hammer, Paintbrush, Droplets, Layers, Eye,
 } from "lucide-react";
-import { SERVICES as FALLBACK_SERVICES } from "@/lib/constants";
 import { staggerContainer, staggerItem, sectionHeader, springs, easings } from "@/lib/motion";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { useSettings } from "@/hooks/use-settings";
@@ -15,12 +14,13 @@ import type { LucideIcon } from "lucide-react";
 
 const ICON_MAP: Record<string, LucideIcon> = { Gem, Ruler, Home, Truck, Palette, ShieldCheck, Wrench, Hammer, Paintbrush, Droplets, Layers, Eye };
 
+type Service = { icon: string; title: string; description: string };
+
 export function ServicesSection() {
-  const [services, setServices] = useState(FALLBACK_SERVICES);
+  const [services, setServices] = useState<Service[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const { sections } = useSettings();
   const sec = sections.services;
-
-  // Split title into base + accent for gradient highlight
   const titleBase = sec.title.replace(sec.title_accent, "").trim();
   const titleAccentFirst = sec.title.startsWith(sec.title_accent);
 
@@ -31,14 +31,15 @@ export function ServicesSection() {
         const res = await fetch("/api/services");
         const data = await res.json();
         if (!active) return;
-        if (Array.isArray(data) && data.length > 0) {
-          setServices(data);
-        }
+        if (Array.isArray(data) && data.length > 0) setServices(data);
       } catch {}
+      if (active) setLoaded(true);
     };
     load();
     return () => { active = false; };
   }, []);
+
+  if (!loaded || services.length === 0) return null;
 
   return (
     <section id="services" className="section-padding bg-white">
@@ -73,18 +74,15 @@ export function ServicesSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
           style={{ perspective: "1200px" }}
         >
           {services.map((service, index) => {
             const Icon = (ICON_MAP[service.icon] || Gem) as React.ComponentType<{ className?: string }>;
             return (
-              <motion.div
-                key={index}
-                variants={staggerItem}
-              >
+              <motion.div key={index} variants={staggerItem}>
                 <TiltCard tiltStrength={12} scaleOnHover={1.02}>
-                  <div className="group relative p-8 rounded-2xl bg-stone-50 border border-stone-100 hover:border-bronze-200 hover:shadow-xl hover:shadow-bronze-100/50 transition-all duration-500 h-full">
+                  <div className="group relative p-5 md:p-8 rounded-2xl bg-stone-50 border border-stone-100 hover:border-bronze-200 hover:shadow-xl hover:shadow-bronze-100/50 transition-all duration-500 h-full">
                     <motion.div
                       className="w-14 h-14 bg-gradient-to-br from-bronze-100 to-bronze-200 rounded-xl flex items-center justify-center mb-6"
                       whileHover={{
