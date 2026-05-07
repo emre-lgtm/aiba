@@ -112,9 +112,31 @@ export function SettingsForm() {
     event.target.value = "";
   };
 
+  const handleFaviconUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/x-icon", "image/svg+xml"];
+    if (!allowedTypes.includes(file.type)) { toast.error("Use PNG, JPG, WEBP or ICO"); return; }
+    if (file.size > 1 * 1024 * 1024) { toast.error("Favicon must be smaller than 1 MB"); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== "string") { toast.error("Failed to read favicon"); return; }
+      setSettings({ ...settings, favicon_data_url: reader.result });
+      window.dispatchEvent(new CustomEvent("aiba:favicon-updated", { detail: reader.result }));
+      toast.success("Favicon ready to save");
+    };
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+
   const handleLogoReset = () => {
     setSettings({ ...settings, logo_data_url: "" });
     window.dispatchEvent(new CustomEvent(LOGO_UPDATED_EVENT, { detail: "" }));
+  };
+
+  const handleFaviconReset = () => {
+    setSettings({ ...settings, favicon_data_url: "" });
+    window.dispatchEvent(new CustomEvent("aiba:favicon-updated", { detail: "" }));
   };
 
   if (loading) {
@@ -203,44 +225,98 @@ export function SettingsForm() {
 
       {/* ── Branding ────────────────────────────────────────────────────── */}
       {activeTab === "branding" && (
-        <Card className="border-0 shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <ImageIcon className="h-4 w-4 text-bronze-600" /> Branding
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="rounded-xl border border-stone-200 bg-stone-50 p-4">
-                <Image
-                  src={getLogoSrc(settings.logo_data_url)}
-                  alt="Logo preview"
-                  width={240}
-                  height={120}
-                  unoptimized
-                  className="h-16 w-auto object-contain"
-                />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <label className="inline-flex cursor-pointer items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-stone-800">
-                  Upload Logo
-                  <input
-                    type="file"
-                    accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp"
-                    className="hidden"
-                    onChange={handleLogoUpload}
+        <div className="space-y-5">
+          {/* Logo */}
+          <Card className="border-0 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ImageIcon className="h-4 w-4 text-bronze-600" /> Logo (PNG önerilir)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="rounded-xl border border-stone-200 bg-stone-100 p-4 flex items-center justify-center min-h-20">
+                  <Image
+                    src={getLogoSrc(settings.logo_data_url)}
+                    alt="Logo preview"
+                    width={240}
+                    height={120}
+                    unoptimized
+                    className="h-14 w-auto object-contain"
                   />
-                </label>
-                <Button type="button" variant="outline" onClick={handleLogoReset} disabled={!settings.logo_data_url}>
-                  <RefreshCcw className="mr-2 h-4 w-4" />Use Default
-                </Button>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <label className="inline-flex cursor-pointer items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-stone-800">
+                    Logo Yükle
+                    <input
+                      type="file"
+                      accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp"
+                      className="hidden"
+                      onChange={handleLogoUpload}
+                    />
+                  </label>
+                  <Button type="button" variant="outline" onClick={handleLogoReset} disabled={!settings.logo_data_url}>
+                    <RefreshCcw className="mr-2 h-4 w-4" />Varsayılanı Kullan
+                  </Button>
+                </div>
               </div>
-            </div>
-            <p className="text-sm text-stone-500">
-              Upload a logo once and it will update the site header, footer, admin panel, and favicon.
-            </p>
-          </CardContent>
-        </Card>
+              <p className="text-xs text-stone-400">
+                Header ve footer logosunu günceller. PNG önerilir. Maks 2 MB.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Favicon */}
+          <Card className="border-0 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ImageIcon className="h-4 w-4 text-bronze-600" /> Favicon (Tarayıcı İkonu)
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="rounded-xl border border-stone-200 bg-stone-100 p-4 flex items-center gap-4">
+                  {settings.favicon_data_url ? (
+                    <img
+                      src={settings.favicon_data_url}
+                      alt="Favicon preview"
+                      className="h-10 w-10 object-contain rounded"
+                    />
+                  ) : (
+                    <div className="h-10 w-10 rounded border-2 border-dashed border-stone-300 flex items-center justify-center">
+                      <ImageIcon className="h-4 w-4 text-stone-400" />
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm font-medium text-stone-700">
+                      {settings.favicon_data_url ? "Özel favicon aktif" : "Varsayılan favicon kullanılıyor"}
+                    </p>
+                    <p className="text-xs text-stone-400">
+                      Tarayıcı sekmesinde görünen küçük ikon
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <label className="inline-flex cursor-pointer items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-stone-800">
+                    Favicon Yükle
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/x-icon,image/svg+xml"
+                      className="hidden"
+                      onChange={handleFaviconUpload}
+                    />
+                  </label>
+                  <Button type="button" variant="outline" onClick={handleFaviconReset} disabled={!settings.favicon_data_url}>
+                    <RefreshCcw className="mr-2 h-4 w-4" />Kaldır
+                  </Button>
+                </div>
+              </div>
+              <p className="text-xs text-stone-400">
+                Önerilir: 32×32 veya 64×64 px PNG. Maks 1 MB.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       )}
 
       {/* ── Contact ─────────────────────────────────────────────────────── */}

@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowDown } from "lucide-react";
-import { HERO_SLIDES as FALLBACK_SLIDES } from "@/lib/constants";
 import { springs, easings } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
 import { cn } from "@/lib/utils";
@@ -79,14 +78,8 @@ export function HeroSection() {
         const res = await fetch("/api/hero");
         const data = await res.json();
         if (!active) return;
-        if (Array.isArray(data) && data.length > 0) {
-          setSlides(data);
-        } else {
-          setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
-        }
-      } catch {
-        if (active) setSlides(FALLBACK_SLIDES.map((s) => ({ ...s, id: String(s.id), image_url: s.image })));
-      }
+        if (Array.isArray(data)) setSlides(data);
+      } catch {}
     };
     load();
     return () => { active = false; };

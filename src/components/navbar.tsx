@@ -29,7 +29,7 @@ export function Navbar() {
   const [isHidden, setIsHidden] = useState(false);
   const lastScrollY = useRef(0);
 
-  const { site_name, nav_links, phone } = useSettings();
+  const { nav_links, phone } = useSettings();
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -57,35 +57,10 @@ export function Navbar() {
     >
       <nav className="container-luxury flex items-center justify-between h-20">
         <Magnetic strength={0.08}>
-          <a href="#hero" className="flex items-center gap-3.5 group">
-            <motion.span
-              layout
-              className={cn(
-                "flex items-center justify-center rounded-xl p-2 transition-all duration-500",
-                isScrolled
-                  ? "bg-white shadow-md ring-1 ring-stone-100"
-                  : "bg-white/90 shadow-lg ring-1 ring-white/20"
-              )}
-            >
-              <Logo className="h-6 w-auto max-w-20" />
+          <a href="#hero" className="flex items-center group">
+            <motion.span layout>
+              <Logo className="h-10 w-auto max-w-36" />
             </motion.span>
-            <div className="flex flex-col">
-              <span
-                className={cn(
-                  "text-lg font-bold tracking-tight transition-colors duration-500 leading-tight",
-                  isScrolled ? "text-stone-900" : "text-white"
-                )}
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                {site_name}
-              </span>
-              <span className={cn(
-                "text-[10px] tracking-[0.2em] uppercase font-medium transition-colors duration-500",
-                isScrolled ? "text-stone-400" : "text-white/50"
-              )}>
-                Premium Stone
-              </span>
-            </div>
           </a>
         </Magnetic>
 

@@ -19,6 +19,7 @@ export type SiteSettings = {
   nav_links: NavLink[];
   footer_text: string;
   logo_data_url: string;
+  favicon_data_url: string;
   sections: {
     services: SectionHeader;
     portfolio: SectionHeader;
@@ -64,6 +65,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   nav_links: NAV_LINKS.map((link) => ({ ...link })),
   footer_text: "Premium Natural Stone & Marble Solutions",
   logo_data_url: "",
+  favicon_data_url: "",
   sections: DEFAULT_SECTIONS,
 };
 
@@ -104,6 +106,7 @@ export function normalizeSiteSettings(
         : DEFAULT_SITE_SETTINGS.address,
     nav_links: navLinks.length > 0 ? navLinks : DEFAULT_SITE_SETTINGS.nav_links,
     logo_data_url: isLogoDataUrl(data?.logo_data_url) ? data.logo_data_url : "",
+    favicon_data_url: isLogoDataUrl(data?.favicon_data_url) ? data.favicon_data_url : "",
     sections,
   };
 }

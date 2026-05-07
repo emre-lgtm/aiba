@@ -3,11 +3,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
-import {
-  PORTFOLIO_ITEMS as FALLBACK_ITEMS,
-  PORTFOLIO_CATEGORIES as FALLBACK_CATEGORIES,
-  type PortfolioCategory,
-} from "@/lib/constants";
 import { springs, staggerContainer, staggerItem, sectionHeader, easings } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
 import { useSettings } from "@/hooks/use-settings";
@@ -28,7 +23,7 @@ function toUiItem(item: PortfolioItem) {
   return {
     id: item.id,
     title: item.title,
-    category: (item.category?.name || "All") as PortfolioCategory,
+    category: (item.category?.name || "All") as string,
     description: item.description || "",
     image: item.image_url,
     stone: item.stone_type,
@@ -72,6 +67,7 @@ export function PortfolioSection() {
   const [lightboxDirection, setLightboxDirection] = useState(0);
   const [items, setItems] = useState<ReturnType<typeof toUiItem>[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const { sections } = useSettings();
   const sec = sections.portfolio;
   const titleBase = sec.title.replace(sec.title_accent, "").trim();
@@ -93,37 +89,16 @@ export function PortfolioSection() {
           setItems(portfolioData.map(toUiItem));
           const catNames = ["All", ...categoriesData.map((c: Category) => c.name)];
           setCategories(catNames);
-        } else {
-          setItems(
-            FALLBACK_ITEMS.map((item) => ({
-              id: String(item.id),
-              title: item.title,
-              category: item.category,
-              description: item.description,
-              image: item.image,
-              stone: item.stone,
-            }))
-          );
-          setCategories([...FALLBACK_CATEGORIES]);
         }
-      } catch {
-        if (!active) return;
-        setItems(
-          FALLBACK_ITEMS.map((item) => ({
-            id: String(item.id),
-            title: item.title,
-            category: item.category,
-            description: item.description,
-            image: item.image,
-            stone: item.stone,
-          }))
-        );
-        setCategories([...FALLBACK_CATEGORIES]);
-      }
+      } catch {}
+      if (active) setLoaded(true);
     };
     fetchData();
     return () => { active = false; };
   }, []);
+
+  // Hide entire section until loaded, and if no items
+  if (!loaded || items.length === 0) return null;
 
   const filteredItems =
     activeCategory === "All"

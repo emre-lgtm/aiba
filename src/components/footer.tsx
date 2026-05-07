@@ -17,7 +17,7 @@ const footerLinkVariants = {
 };
 
 export function Footer() {
-  const { site_name, phone, email, address, nav_links, footer_text, site_description } = useSettings();
+  const { phone, email, address, nav_links, footer_text, site_description, site_name } = useSettings();
   const footerRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -42,16 +42,8 @@ export function Footer() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
         >
           <motion.div variants={staggerItem} className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="flex items-center justify-center rounded-lg bg-white p-1.5 shadow-sm">
-                <Logo className="h-7 w-auto max-w-24" />
-              </span>
-              <span
-                className="text-2xl font-bold text-white"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                {site_name}
-              </span>
+            <div className="flex items-center mb-6">
+              <Logo className="h-10 w-auto max-w-40" />
             </div>
             <p className="text-stone-400 leading-relaxed max-w-md">
               {site_description}
