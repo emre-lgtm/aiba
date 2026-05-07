@@ -227,3 +227,16 @@ SET data = data || '{
   }
 }'::jsonb
 WHERE id = 1 AND NOT (data ? 'sections');
+
+-- ============================================
+-- v4 — Multi-image support for portfolio items
+-- Run in Supabase SQL Editor
+-- ============================================
+
+-- images: [{url, focal_x, focal_y}]  (focal 0-100, default 50/50 = center)
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS images jsonb DEFAULT '[]'::jsonb;
+
+-- Migrate existing single image_url into images array (safe, won't overwrite if already set)
+UPDATE portfolio_items
+SET images = jsonb_build_array(jsonb_build_object('url', image_url, 'focal_x', 50, 'focal_y', 50))
+WHERE (images IS NULL OR images = '[]'::jsonb) AND image_url IS NOT NULL AND image_url != '';
