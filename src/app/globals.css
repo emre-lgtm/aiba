@@ -41,6 +41,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  overflow-y: scroll; /* always show scrollbar - prevents layout shift */
+}
+
 ::selection {
   background: var(--color-bronze-200);
   color: #1a1918;

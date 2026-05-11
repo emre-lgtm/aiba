@@ -21,8 +21,8 @@ type HeroSlide  = {
 };
 
 const DEFAULT_BUTTONS: HeroButton[] = [
-  { label: "Projelerimizi Gör", href: "#portfolio", style: "primary" },
-  { label: "Teklif Al",         href: "#contact",   style: "outline"  },
+  { label: "View Our Projects", href: "#portfolio", style: "primary" },
+  { label: "Get a Quote",       href: "#contact",   style: "outline"  },
 ];
 
 const textVariants = {
@@ -142,9 +142,8 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      // Height = 100vh per slide (so scrolling through advances slides)
       style={{ height: `${numSlides * 100}vh` }}
-      className="relative"
+      className="relative w-screen -ml-[calc((100vw-100%)/2)]"
     >
       {/* ── Sticky viewport ─────────────────────────────────────────────── */}
       <motion.div
@@ -341,7 +340,7 @@ export function HeroSection() {
           className="hidden sm:flex absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2"
         >
           <span className="text-white/35 text-[10px] tracking-[0.3em] uppercase">
-            {activeSlide < slides.length - 1 ? "Kaydır" : "Devam"}
+            {activeSlide < slides.length - 1 ? "Scroll" : "Continue"}
           </span>
           <div className="w-5 h-8 rounded-full border border-white/25 flex items-start justify-center p-1.5">
             <motion.div
