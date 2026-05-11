@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,20 +9,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+  Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Plus,
-  Pencil,
-  Trash2,
-  Loader2,
-  Upload,
-  X,
-  MousePointerClick,
-  GripVertical,
+  Plus, Pencil, Trash2, Loader2, Upload, X,
+  MousePointerClick, GripVertical, Video, CheckCircle2, Film,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -62,7 +54,20 @@ export function HeroManager() {
   const [isActive, setIsActive] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [buttons, setButtons] = useState<HeroButton[]>(DEFAULT_BUTTONS);
+
+  // ── Video state ──────────────────────────────────────────────────────────
+  const [currentVideoUrl, setCurrentVideoUrl] = useState("/video.mp4");
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
+
   const supabase = createClient();
+
+  // Load current video URL from settings
+  useEffect(() => {
+    fetch("/api/settings").then(r => r.json()).then(d => {
+      if (d.hero_video_url) setCurrentVideoUrl(d.hero_video_url);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -83,6 +88,46 @@ export function HeroManager() {
     const data = await res.json();
     if (Array.isArray(data)) setSlides(data);
   }, []);
+
+  // ── Video upload ─────────────────────────────────────────────────────────
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("video/")) { toast.error("Sadece video dosyası yüklenebilir (MP4, WebM)"); return; }
+    if (file.size > 200 * 1024 * 1024) { toast.error("Video 200 MB'dan küçük olmalı"); return; }
+
+    setUploadingVideo(true);
+    setVideoProgress(0);
+
+    const path = `hero-video-${Date.now()}.${file.name.split(".").pop()}`;
+    const { error } = await supabase.storage
+      .from("hero-images")
+      .upload(path, file, { contentType: file.type, upsert: true });
+
+    if (error) {
+      toast.error("Video yüklenemedi: " + error.message);
+      setUploadingVideo(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from("hero-images").getPublicUrl(path);
+    const videoUrl = urlData.publicUrl;
+
+    // Save to settings
+    const settingsRes = await fetch("/api/settings");
+    const settings = settingsRes.ok ? await settingsRes.json() : {};
+    await fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...settings, hero_video_url: videoUrl }),
+    });
+
+    setCurrentVideoUrl(videoUrl);
+    setUploadingVideo(false);
+    setVideoProgress(100);
+    toast.success("Video güncellendi! Sayfa yenilenmeli.");
+    e.target.value = "";
+  };
 
   const openNew = () => {
     setEditing(null);
@@ -189,9 +234,87 @@ export function HeroManager() {
           <p className="text-stone-500 text-sm mt-1">{slides.length} slides</p>
         </div>
         <Button onClick={openNew} className="bg-stone-900 hover:bg-stone-800 text-white shadow-sm">
-          <Plus className="h-4 w-4 mr-2" />Add Slide
+          <Plus className="h-4 w-4 mr-2" />Slide Ekle
         </Button>
       </div>
+
+      {/* ── Arka Plan Videosu ───────────────────────────────────────────────── */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Film className="h-4 w-4 text-bronze-600" />
+            Arka Plan Videosu
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+            {/* Preview */}
+            <div className="relative rounded-xl overflow-hidden bg-stone-900 aspect-video">
+              <video
+                key={currentVideoUrl}
+                src={currentVideoUrl}
+                className="w-full h-full object-cover opacity-80"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+              <div className="absolute inset-0 flex items-end p-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-white text-xs font-medium">Mevcut video</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Upload */}
+            <div className="space-y-3">
+              <p className="text-sm text-stone-600">
+                Hero bölümünde slaytların arkasında döngü olarak oynatılan video. MP4 formatı önerilir.
+              </p>
+              <div className="space-y-2 text-xs text-stone-500">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>MP4 veya WebM formatı</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>Maks 200 MB</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>1920×1080 veya üstü önerilir</span>
+                </div>
+              </div>
+
+              <label className={`flex flex-col items-center justify-center w-full py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
+                uploadingVideo ? "border-bronze-400 bg-bronze-50/30" : "border-stone-200 hover:border-bronze-400 hover:bg-bronze-50/20"
+              }`}>
+                {uploadingVideo ? (
+                  <>
+                    <Loader2 className="h-6 w-6 text-bronze-500 animate-spin mb-2" />
+                    <span className="text-sm font-medium text-stone-600">Yükleniyor...</span>
+                    <span className="text-xs text-stone-400 mt-1">Büyük dosyalar için bekleyin</span>
+                  </>
+                ) : (
+                  <>
+                    <Video className="h-6 w-6 text-stone-400 mb-2" />
+                    <span className="text-sm font-medium text-stone-600">Yeni video yükle</span>
+                    <span className="text-xs text-stone-400 mt-1">MP4, WebM · Maks 200 MB</span>
+                  </>
+                )}
+                <input
+                  type="file"
+                  accept="video/mp4,video/webm,video/*"
+                  className="hidden"
+                  onChange={handleVideoUpload}
+                  disabled={uploadingVideo}
+                />
+              </label>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* ── Dialog ─────────────────────────────────────────────────────────── */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

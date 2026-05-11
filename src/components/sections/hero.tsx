@@ -51,6 +51,7 @@ export function HeroSection() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [heroVideoUrl, setHeroVideoUrl] = useState("/video.mp4");
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -82,6 +83,12 @@ export function HeroSection() {
       } catch {}
     };
     load();
+
+    // Load video URL from settings
+    fetch("/api/settings").then(r => r.json()).then(d => {
+      if (d.hero_video_url) setHeroVideoUrl(d.hero_video_url);
+    }).catch(() => {});
+
     return () => { active = false; };
   }, []);
 
@@ -124,7 +131,7 @@ export function HeroSection() {
             videoLoaded ? "opacity-100" : "opacity-0"
           )}
         >
-          <source src="/video.mp4" type="video/mp4" />
+          <source src={heroVideoUrl} type="video/mp4" />
         </video>
 
         {!videoLoaded && slide && (
