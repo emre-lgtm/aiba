@@ -42,7 +42,8 @@ body {
 }
 
 html {
-  overflow-y: scroll; /* always show scrollbar - prevents layout shift */
+  scrollbar-gutter: stable;
+  overflow-y: auto;
 }
 
 ::selection {

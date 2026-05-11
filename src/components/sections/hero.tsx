@@ -143,13 +143,13 @@ export function HeroSection() {
       ref={sectionRef}
       id="hero"
       style={{ height: `${numSlides * 100}vh` }}
-      className="relative w-screen -ml-[calc((100vw-100%)/2)]"
+      className="relative w-full"
     >
       {/* ── Sticky viewport ─────────────────────────────────────────────── */}
       <motion.div
         ref={stickyRef}
         style={{ opacity: stickyOpacity, scale: stickyScale }}
-        className="sticky top-0 h-screen overflow-hidden"
+        className="sticky top-0 left-0 w-full h-screen overflow-hidden"
       >
         {/* ── Video background ────────────────────────────────────────── */}
         <div className="absolute inset-0">
