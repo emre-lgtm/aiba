@@ -240,3 +240,27 @@ ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS images jsonb DEFAULT '[]'::
 UPDATE portfolio_items
 SET images = jsonb_build_array(jsonb_build_object('url', image_url, 'focal_x', 50, 'focal_y', 50))
 WHERE (images IS NULL OR images = '[]'::jsonb) AND image_url IS NOT NULL AND image_url != '';
+
+-- ============================================
+-- v5 — Contact submissions table
+-- ============================================
+CREATE TABLE IF NOT EXISTS contact_submissions (
+  id         uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+  name       text        NOT NULL,
+  email      text        NOT NULL,
+  phone      text,
+  subject    text,
+  message    text        NOT NULL,
+  read       boolean     NOT NULL DEFAULT false,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+-- Only authenticated users (admin) can read submissions
+CREATE POLICY IF NOT EXISTS "Auth read contact" ON contact_submissions
+  FOR SELECT TO authenticated USING (true);
+
+-- Anyone can insert (public contact form)  
+CREATE POLICY IF NOT EXISTS "Public insert contact" ON contact_submissions
+  FOR INSERT TO anon WITH CHECK (true);
+
+ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
